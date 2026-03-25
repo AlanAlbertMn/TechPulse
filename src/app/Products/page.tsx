@@ -33,7 +33,7 @@ export default function Products() {
 
 					<button
 						// onClick={() => addToCart(product)}
-						className='w-full bg-blue-500 py-2 rounded-xl'
+						className='w-full bg-cyan-600 py-2 rounded-xl hover:bg-cyan-800'
 					>
 						Add to cart
 					</button>

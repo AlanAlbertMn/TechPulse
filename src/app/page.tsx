@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
 import Navbar from "@/components/navbar.js";
 import Products from "./Products/page";
 
 export default function Ecommerce() {
+  // const [cart, setCart] = useState([]);
   // const addToCart = (product: Product) => {
   //   setCart([...cart, product]);
   // };
@@ -22,14 +22,14 @@ export default function Ecommerce() {
           Latest gadgets curated for you
         </p>
 
-        <button className="bg-blue-500 px-6 py-3 rounded-2xl">
-          Shop Now
+        <button className="bg-cyan-600 px-6 py-3 rounded-2xl hover:bg-cyan-800">
+          Browse Deals
         </button>
       </section>
 
       {/* PRODUCTS */}
       <section className="max-w-7xl mx-auto py-16">
-        <h2 className="text-3xl mb-10">Products</h2>
+        <h2 className="text-3xl mb-10">Trending Products</h2>
         <div className="grid md:grid-cols-5 gap-6">
           <Products />
         </div>

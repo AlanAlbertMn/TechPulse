@@ -1,4 +1,3 @@
-import fs from 'node:fs'
 import sql from 'better-sqlite3';
 
 const db = sql('products.db');
