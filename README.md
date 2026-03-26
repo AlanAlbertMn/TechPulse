@@ -13,6 +13,7 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 1. Auth (login/register)
 1. Wishlist
 1. Filtering (price, reviews)
+1. Add DB functionality
 
 ### Consumed API
 RapidApi - Real Time Amazon Data ->
