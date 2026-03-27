@@ -12,6 +12,10 @@ const CartDrawer = ({ handleCartOpen }) => {
             <div className='absolute right-0 top-0 h-full w-80 bg-slate-900 p-6 overflow-y-auto'>
                 <div className='flex justify-between mb-6'>
                     <h2>Cart</h2>
+					<button
+						className='bg-red-800 rounded-2xl px-3'
+						onClick={() => setCart([])}
+					>Clear cart</button>
                     <button onClick={() => handleCartOpen(false)}>
                         <X />
                     </button>
