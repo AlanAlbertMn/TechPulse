@@ -12,7 +12,7 @@ const Navbar = () => {
 
 	useEffect(() => {
 	  // get cart from context for displaying it
-	  localStorage.getItem('cart') ? setCart(JSON.parse(localStorage.getItem('cart'))) : ''
+	  localStorage.getItem('cart') ? setCart(JSON.parse(localStorage.getItem('cart'))) : '';
 	}, [setCart])
 	
 

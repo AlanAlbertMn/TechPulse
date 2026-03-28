@@ -25,7 +25,7 @@ const CartDrawer = ({ handleCartOpen }) => {
 
                 {cart.map((item, i) => (
                     <div key={i} className='mb-4 flex justify-center'>
-                        <p>{`${item.product.product_title.substring(0, 50).trim()}...`}</p>
+                        <p>{`${item.product.product_title.split(' ').slice(0,10).join(' ')}`}</p>
                         <p className='text-sm text-slate-400'>
                             {item.product.product_price}
                         </p>
