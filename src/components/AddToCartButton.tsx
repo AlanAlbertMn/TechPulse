@@ -18,7 +18,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
 		const titleArray = product.product_title.split(' ').slice(0,10).join(' ');
 		const existingProd = cart.find(cartItem => cartItem.product.asin == product.asin);
 		if (existingProd) {
-			//item is already in the cart
+			//item already in the cart
 			const productToAdd: CartProps = { product: product, quantity: existingProd.quantity+1 };
 			const newCart = cart.filter(cartItem => cartItem.product.asin != product.asin)
 			setCart([productToAdd, ...newCart]);
@@ -31,7 +31,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
 		
 		localStorage.setItem('cart', JSON.stringify(cart));
 		toast.success(`${titleArray}... has been added to the cart`, {
-			position: 'top-right',
+			position: 'bottom-right',
 			autoClose: 5000,
 			hideProgressBar: false,
 			closeOnClick: true,
