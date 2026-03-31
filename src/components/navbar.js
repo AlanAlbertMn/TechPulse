@@ -1,12 +1,20 @@
 'use client';
 import { Search, ShoppingCart, User} from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import techLogo from '../../assets/img/TechPulseLaptopWhite.svg';
 import Image from 'next/image';
 import CartDrawer from '@/components/cartdrawer'
+import { useCart } from '@/lib/CartProvider';
 
 const Navbar = () => {
 	const [cartOpen, setCartOpen] = useState(false);
+	const { setCart } = useCart();
+
+	useEffect(() => {
+	  // get cart from context for displaying it
+	  localStorage.getItem('cart') ? setCart(JSON.parse(localStorage.getItem('cart'))) : '';
+	}, [setCart])
+	
 
 	return (
 		<>

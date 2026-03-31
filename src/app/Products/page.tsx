@@ -11,21 +11,22 @@ export default function Products() {
 	const dummyProds = getProducts();
 
 	// const dummyProds = amazonData;
-	
 
+	
+	
 	return (
 		<>
 			{dummyProds.map((product: Product) => (
-				<div key={product.asin} className='bg-slate-900 p-4 rounded-2xl border border-slate-800 cursor-pointer'>
+				<div key={product.asin} className='bg-slate-900 p-4 inline-grid rounded-2xl border border-slate-800 cursor-pointer'>
 					<Image
 						src={product.product_photo}
 						alt={product.product_title}
 						height={300}
 						width={300}
-						className='rounded-xl mb-4 size-full max-h-40'
+						className='rounded-xl mb-2 size-full max-h-40'
 					/>
 
-					<h3 className='font-semibold'>{`${product.product_title.substring(0, 30).trim()}...`}</h3>
+					<h3 className='font-semibold mt-2'>{`${product.product_title.split(' ').slice(0,8).join(' ')}...`}</h3>
 
 					<p className='text-blue-400'>{product.product_price}</p>
 					

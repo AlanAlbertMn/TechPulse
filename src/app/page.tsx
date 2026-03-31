@@ -29,7 +29,7 @@ export default function Ecommerce() {
 
       {/* PRODUCTS */}
       <section className="max-w-7xl mx-auto py-16">
-        <h2 className="text-3xl mb-10">Trending Products</h2>
+        <h2 className="text-3xl my-10">Trending Products</h2>
         <div className="grid md:grid-cols-5 gap-6">
           <Products />
         </div>

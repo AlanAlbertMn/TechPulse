@@ -2,6 +2,11 @@ export interface ProductsProps{
       products: Product[]
 }
 
+export interface CartProps{
+      product: Product,
+      quantity: number
+}
+
 export type Product = {
       asin: string | undefined | null,
       product_title: string,

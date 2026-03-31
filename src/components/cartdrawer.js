@@ -1,19 +1,39 @@
-import { X } from 'lucide-react';
-import { useCart} from '@/lib/CartProvider'
+import { MinusCircleIcon, PlusCircleIcon, Trash, X } from 'lucide-react';
+import { useCart } from '@/lib/CartProvider';
+import Image from 'next/image';
 
-const CartDrawer = ({handleCartOpen}) => {
-    const {cart} = useCart();
+const CartDrawer = ({ handleCartOpen }) => {
+	const { cart, setCart } = useCart();
 
-    console.log(cart);
-    
-
-    // get cart from context for displaying it
 	// const [cart, setCart] = useState(cartContext);
 
+	const handleProductAdd = item => {
+		setCart(
+			cart.map(ci =>
+				ci.product.asin == item.product.asin
+					? { ...item, quantity: item.quantity + 1 }
+					: ci,
+			),
+		);
+	};
+
+	const handleProductDelete = item => {
+		setCart(prevCart => {
+			if (item.quantity == 1) {
+				return prevCart.filter(ci => ci.product.asin != item.product.asin);
+			} else {
+				return prevCart.map(ci => {
+					if (ci.product.asin == item.product.asin) {
+						return { ...ci, quantity: ci.quantity - 1 };
+					} else return ci;
+				});
+			}
+		});
+	};
 
 	return (
 		<div className='fixed inset-0 bg-black/50 z-50'>
-			<div className='absolute right-0 top-0 h-full w-80 bg-slate-900 p-6 overflow-y-auto'>
+			<div className='absolute right-0 top-0 h-full w-60 bg-slate-900 p-6 overflow-y-auto'>
 				<div className='flex justify-between mb-6'>
 					<h2>Cart</h2>
 					<button onClick={() => handleCartOpen(false)}>
@@ -24,14 +44,59 @@ const CartDrawer = ({handleCartOpen}) => {
 				{cart.length === 0 && <p>No items</p>}
 
 				{cart.map((item, i) => (
-					<div key={i} className='mb-4'>
-						<p>{`${item.product_title.substring(0, 50).trim()}...`}</p>
-						<p className='text-sm text-slate-400'>{item.product_price}</p>
+					<div key={i} className='my-4 flex flex-col items-center'>
+                        <Image className='rounded-xl' src={item.product.product_photo} alt={item.product.product_title} width={130} height={50}/>
+						<p className='text-center'>{`${item.product.product_title.split(' ').slice(0, 6).join(' ')}...`}</p>
+						<p className='text-sm text-slate-400'>
+							{item.product.product_price}
+						</p>
+						<div className='flex gap-4 border-amber-300 border-2 rounded-2xl px-5 py-2'>
+							{item.quantity == 1 ? (
+								<button>
+									<Trash
+										className='cursor-pointer'
+										onClick={() => handleProductDelete(item)}
+									/>
+								</button>
+							) : (
+								<button>
+									<MinusCircleIcon
+										className='cursor-pointer'
+										onClick={() => handleProductDelete(item)}
+									/>
+								</button>
+							)}
+							<p className=''>{item.quantity}</p>
+
+							<button>
+								<PlusCircleIcon
+									className='cursor-pointer'
+									onClick={() => handleProductAdd(item)}
+								/>
+							</button>
+						</div>
 					</div>
 				))}
-
+				<p className='text-center text-2xl'>
+					Total: $
+					{cart
+						.reduce(
+							(cartTotal, currProd) =>
+								cartTotal +
+								currProd.product.product_price.replaceAll('$', '') *
+									currProd.quantity,
+							0,
+						)
+						.toFixed(2)}
+				</p>
 				<button className='mt-6 w-full bg-blue-500 py-3 rounded-xl'>
 					Checkout
+				</button>
+				<button
+					className='bg-red-800 rounded-xl w-full py-2 mt-6'
+					onClick={() => setCart([])}
+				>
+					Clear cart
 				</button>
 			</div>
 		</div>
