@@ -4,6 +4,7 @@ import { Product } from '@/types/Product';
 import { Star } from 'lucide-react';
 import {getProducts} from '@/lib/products'
 import AddToCartButton from "@/components/AddToCartButton";
+import Link from 'next/link';
 // import {amazonData} from '../../../assets/amazonData'
 
 export default function Products() {
@@ -36,6 +37,7 @@ export default function Products() {
 							<Star key={i} size={14} />
 						))}
 					</div>
+					<Link href={`/products/${product.asin}`}>See more details</Link>
 					<AddToCartButton product={product}/>
 				</div>
 			))}

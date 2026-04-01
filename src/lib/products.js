@@ -6,3 +6,10 @@ export function getProducts() {
     // new Promise((resolve) => setTimeout(resolve, 2000));
     return db.prepare('SELECT * FROM products').all();
 }
+
+export function getProduct(asin) {
+    console.log(asin);
+    
+    // new Promise((resolve) => setTimeout(resolve, 2000));
+    return db.prepare('SELECT * FROM products WHERE asin = ?').get(asin);
+}

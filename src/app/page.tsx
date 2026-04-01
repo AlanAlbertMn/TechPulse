@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar.js";
-import Products from "./Products/page";
+import Products from "./products/page";
 
 export default function Ecommerce() {
   // const [cart, setCart] = useState([]);
@@ -9,7 +9,7 @@ export default function Ecommerce() {
 
   return (
     <div className="bg-slate-950 text-slate-200 min-h-screen">
-      <Navbar />
+      
       {/* HERO */}
       <section className="pt-64 mb-10 text-center px-6">
         <h1
