@@ -1,4 +1,3 @@
-import Navbar from "@/components/navbar.js";
 import Products from "./products/page";
 
 export default function Ecommerce() {
