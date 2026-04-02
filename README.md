@@ -22,6 +22,10 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 1. ~~Toast notifications~~
 1. ~~Add DB functionality~~
 1. ~~Cart functionalities (persistance, total, manage dupes and quantities)~~
+#### Improvements 
+- Cart ping animation when adding new products
+- Loading animation for checkout
+- Possible development own backend server to save plenty of products and improve app's functionalities (comparing personal backend vs API with more API calls)
 
 ### Consumed API
 RapidApi - Real Time Amazon Data ->
