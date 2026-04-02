@@ -30,7 +30,7 @@ export default function Products() {
 							alt={product.product_title}
 							height={300}
 							width={300}
-							className='rounded-xl mb-2 size-full max-h-40'
+							className='rounded-xl mb-2 size-full max-h-44'
 						/>
 
 						<h3 className='font-semibold mt-2'>{`${product.product_title.split(' ').slice(0, 8).join(' ')}...`}</h3>
@@ -40,7 +40,7 @@ export default function Products() {
 						<div className='flex items-center mb-3'>
 							<p className='mr-1'>{product.product_star_rating}</p>
 							{[...Array(parseInt(product.product_star_rating))].map((_, i) => (
-								<Star key={i} size={14} />
+								<Star key={i} size={14} fill='gold' strokeWidth={0}/>
 							))}
 						</div>
 					</Link>

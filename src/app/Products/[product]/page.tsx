@@ -43,7 +43,7 @@ async function ProductDetails({params}: {params: Promise<{ product: string }>}) 
 						<div className='flex items-center mb-5'>
 							<p className='pr-2'>{prod.product_star_rating}</p>
 							{[...Array(parseInt(prod.product_star_rating))].map((_, i) => (
-								<Star color='gold' key={i} size={20} />
+								<Star strokeWidth={0} fill='gold' key={i} size={20} />
 							))}
 							<p className='ml-2 border-2 border-cyan-700 bg-cyan-900 px-3 rounded-xl'>
 								{prod.product_num_ratings} reviews
