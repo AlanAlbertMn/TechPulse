@@ -544,7 +544,7 @@ const dummyAmazonData = [
 //Delete when persistance is wanted
 db.prepare('DROP TABLE IF EXISTS products').run();
 
-//Populating Products Table
+//Creating Products Table
 db.prepare(
 	`
    CREATE TABLE IF NOT EXISTS products (
@@ -558,6 +558,21 @@ db.prepare(
        delivery TEXT,
 	   product_star_rating REAL NOT NULL,
        product_num_ratings INT NOT NULL
+    )
+`,
+).run();
+
+//Creating Users Table
+db.prepare(
+	`
+   CREATE TABLE IF NOT EXISTS users (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       name TEXT NOT NULL,
+       email TEXT NOT NULL,
+       password TEXT NOT NULL,
+       salt TEXT NOT NULL,
+       role TEXT NOT NULL DEFAULT 'user',
+       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )
 `,
 ).run();

@@ -4,7 +4,7 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 
 #### To-Do's
 1. Auth (login/register)
-    - User sign in and sign up page
+    - **User sign in and sign up page**
     - User registering on DB
     - Navbar showing logged client info
     - Wishlist

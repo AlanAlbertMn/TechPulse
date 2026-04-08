@@ -1,5 +1,5 @@
 'use client';
-import { Search, ShoppingCart, User } from 'lucide-react';
+import { LogIn, Search, ShoppingCart, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import techLogo from '../../assets/img/TechPulseLaptopWhite.svg';
 import Image from 'next/image';
@@ -36,15 +36,19 @@ const Navbar = () => {
 						</div> */}
 
 						<button onClick={() => setCartOpen(true)}>
-
-							{cart.length!=0 && <span className='absolute flex size-3'>
-								<span className='absolute left-5.5 inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75'></span>
-								<span className='absolute left-5.5 inline-flex size-3 rounded-full bg-sky-500'></span>
-							</span>}
-							<ShoppingCart size={30}/>
+							{cart.length != 0 && (
+								<span className='absolute flex size-3'>
+									<span className='absolute left-5.5 inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75'></span>
+									<span className='absolute left-5.5 inline-flex size-3 rounded-full bg-sky-500'></span>
+								</span>
+							)}
+							<ShoppingCart size={30} />
 						</button>
-
-						<User size={30}/>
+						<div className='flex-nowrap'>
+							<Link href='/login'>
+								<LogIn size={30} />
+							</Link>
+						</div>
 					</div>
 				</div>
 			</nav>
