@@ -1,7 +1,8 @@
-import { signUpSchema, User } from '@/types/User';
+import { signUpSchema, signUpUser, User } from '@/types/User';
 import { redirect } from 'next/navigation';
 import { createUser, getUser } from '@/lib/users';
 import { generateSalt, hashPassword } from '../core/passwordHasher';
+import { createUserSession } from '../core/session';
 
 export async function signUp(unsafeData: signUpSchema) {
 	// if (!success) return 'Unable to create account'
@@ -17,15 +18,16 @@ export async function signUp(unsafeData: signUpSchema) {
 		const userSalt = await generateSalt();
 		const hashedPassword = await hashPassword(unsafeData.password, userSalt);
 
-		const user: User = {
+		const user: signUpUser = {
 			name: unsafeData.name,
 			email: unsafeData.email,
 			password: hashedPassword,
 			salt: userSalt,
 		};
 
-		const createdUser = await createUser(user);
-		console.log(createdUser);
+		const createdUser: User = await createUser(user);
+		if (createdUser == null) return 'Unable to create account';
+		await createUserSession(createdUser);
 		return createdUser;
 	} catch {
 		return 'Unable to create account';

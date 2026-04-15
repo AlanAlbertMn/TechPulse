@@ -1,12 +1,7 @@
 'use client';
 import { signUpSchema } from '@/types/User';
 import Link from 'next/link';
-import {
-	Resolver,
-	SubmitErrorHandler,
-	SubmitHandler,
-	useForm,
-} from 'react-hook-form';
+import { Resolver, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { signUp } from '../api/auth/nextjs/actions';
 import { toast } from 'react-toastify';
 
@@ -35,7 +30,17 @@ const RegisterPage = () => {
 	async function onSubmit(data: signUpSchema) {
 		// console.log(data);
 		const user = await signUp(data);
-		console.log(user);
+		if (
+			user === 'Account already exists for this email' ||
+			user === 'Unable to create account'
+		) {
+			toast.error(user, {
+				position: 'bottom-right',
+				closeOnClick: true,
+				pauseOnHover: false,
+				theme: 'colored',
+			});
+		} else console.log(user);
 	}
 
 	const onError: SubmitErrorHandler<signUpSchema> = (errors) =>
@@ -55,6 +60,7 @@ const RegisterPage = () => {
 						{...register('name')}
 						required
 						minLength={2}
+						autoComplete={'name'}
 					/>
 					<input
 						className='bg-slate-700 text-white px-6 py-2 rounded'
@@ -62,6 +68,7 @@ const RegisterPage = () => {
 						placeholder='Email'
 						required
 						{...register('email')}
+						autoComplete={'email'}
 					/>
 					{errors.email && (
 						<p className='text-red-500'>{errors.email.message}</p>

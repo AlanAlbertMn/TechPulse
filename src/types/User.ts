@@ -5,14 +5,28 @@ export type signUpSchema = {
 	confirmPassword: string;
 };
 
+export type signUpUser = {
+	name: string;
+	email: string;
+	password: string;
+	salt: string;
+};
+
 export type signInSchema = {
 	email: string;
 	password: string;
 };
 
 export type User = {
+	id: number;
 	name: string;
 	email: string;
 	password: string;
 	salt: string;
+	role: Roles;
 };
+
+export enum Roles {
+	User = 'User',
+	Admin = 'Admin',
+}
