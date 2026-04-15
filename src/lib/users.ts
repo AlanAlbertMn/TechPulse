@@ -25,3 +25,9 @@ export async function createUserSessionDB(
 		'INSERT INTO sessions (sessionId, userId, userRole) VALUES (?, ?, ?)',
 	).run(sessionId, userId.toString(), userRole);
 }
+
+export async function findUserFromSessionId(sessionId: string) {
+	return db
+		.prepare('SELECT * FROM sessions WHERE sessionId = ?')
+		.get(sessionId);
+}

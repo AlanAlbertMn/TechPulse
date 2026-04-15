@@ -30,3 +30,10 @@ export enum Roles {
 	User = 'User',
 	Admin = 'Admin',
 }
+
+export type sessionSchema = {
+	sessionId: string;
+	userId: number;
+	userRole: Roles;
+	expiresAt: string;
+};
