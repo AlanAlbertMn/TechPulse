@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Resolver, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { signUp } from '../api/auth/nextjs/actions';
 import { toast } from 'react-toastify';
+import { redirect } from 'next/navigation';
 
 const resolver: Resolver<signUpSchema> = async (values) => {
 	//TODO - Add passwords are equal validation
@@ -13,7 +14,7 @@ const resolver: Resolver<signUpSchema> = async (values) => {
 			? {
 					email: {
 						type: 'required',
-						message: 'A email is required',
+						message: 'An email is required',
 					},
 				}
 			: {},
@@ -40,7 +41,7 @@ const RegisterPage = () => {
 				pauseOnHover: false,
 				theme: 'colored',
 			});
-		} else console.log(user);
+		} else redirect('/');
 	}
 
 	const onError: SubmitErrorHandler<signUpSchema> = (errors) =>

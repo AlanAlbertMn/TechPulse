@@ -9,6 +9,10 @@ export async function getUser(email: string): Promise<User> {
 	return db.prepare('SELECT * FROM users WHERE email = ?').get(email) as User;
 }
 
+export async function getUserById(id: number): Promise<User> {
+	return db.prepare('SELECT * FROM users WHERE id = ?').get(id) as User;
+}
+
 export async function createUser(user: signUpUser): Promise<User> {
 	db.prepare(
 		'INSERT INTO users (name, email, password, salt) VALUES (?, ?, ?, ?)',
@@ -30,4 +34,8 @@ export async function findUserFromSessionId(sessionId: string) {
 	return db
 		.prepare('SELECT * FROM sessions WHERE sessionId = ?')
 		.get(sessionId);
+}
+
+export async function deleteUserSessionDB(sessionId: string) {
+	db.prepare('DELETE FROM sessions WHERE sessionId = ?').run(sessionId);
 }

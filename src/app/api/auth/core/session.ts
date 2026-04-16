@@ -1,17 +1,31 @@
 'use server';
 import crypto from 'crypto';
 import { sessionSchema, User } from '@/types/User';
-import { createUserSessionDB, findUserFromSessionId } from '@/lib/users';
+import {
+	createUserSessionDB,
+	deleteUserSessionDB,
+	findUserFromSessionId,
+	getUserById,
+} from '@/lib/users';
 import { cookies } from 'next/headers';
 
 const SESSION_EXPIRATION_DAYS = 60 * 60 * 24 * 7;
 
-export async function getUserFromSession() {
+export async function getUserFromSession(withFullUser: boolean = false) {
 	const cookieStore = await cookies();
 	const sessionId = cookieStore.get('sessionId')?.value;
+
 	if (sessionId == null) return null;
 
-	return await getUserSessionById(sessionId);
+	const userInfo = await getUserSessionById(sessionId);
+	if (userInfo == null) return null;
+
+	if (withFullUser) {
+		const userFound = await getUserById(userInfo.userId);
+		return userFound;
+	} else {
+		return userInfo;
+	}
 }
 
 async function getUserSessionById(sessionId: string) {
@@ -31,4 +45,13 @@ export async function createUserSession(user: User) {
 		expires: Date.now() + SESSION_EXPIRATION_DAYS * 1000,
 		sameSite: 'lax',
 	});
+}
+
+export async function deleteUserSession() {
+	const cookieStore = await cookies();
+	const sessionId = cookieStore.get('sessionId')?.value;
+	if (sessionId == null) return null;
+
+	cookieStore.delete('sessionId');
+	await deleteUserSessionDB(sessionId);
 }

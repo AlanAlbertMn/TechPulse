@@ -1,10 +1,6 @@
-import { getUserFromSession } from './api/auth/core/session';
 import Products from './products/page';
 
 export default async function Ecommerce() {
-	const fullUser = await getUserFromSession();
-	console.log(fullUser);
-
 	return (
 		<div className='bg-slate-950 text-slate-200 min-h-screen'>
 			{/* HERO */}

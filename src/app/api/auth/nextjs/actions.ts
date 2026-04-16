@@ -1,8 +1,27 @@
-import { signUpSchema, signUpUser, User } from '@/types/User';
+import { signInSchema, signUpSchema, signUpUser, User } from '@/types/User';
 import { redirect } from 'next/navigation';
 import { createUser, getUser } from '@/lib/users';
-import { generateSalt, hashPassword } from '../core/passwordHasher';
-import { createUserSession } from '../core/session';
+import {
+	comparePasswords,
+	generateSalt,
+	hashPassword,
+} from '../core/passwordHasher';
+import { createUserSession, deleteUserSession } from '../core/session';
+
+export async function signIn(unsafeData: signInSchema) {
+	const user = await getUser(unsafeData.email);
+	if (!user) return 'Unable to log you in';
+
+	const isCorrectPassword = await comparePasswords({
+		hashedPassword: user.password,
+		typedPassword: unsafeData.password,
+		userSalt: user.salt,
+	});
+	if (!isCorrectPassword) return 'Unable to log you in';
+	await createUserSession(user);
+
+	redirect('/');
+}
 
 export async function signUp(unsafeData: signUpSchema) {
 	// if (!success) return 'Unable to create account'
@@ -35,6 +54,5 @@ export async function signUp(unsafeData: signUpSchema) {
 }
 
 export async function logOut() {
-	//TODO - Implement
-	redirect('/');
+	await deleteUserSession();
 }

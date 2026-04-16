@@ -16,3 +16,21 @@ export async function hashPassword(
 export async function generateSalt() {
 	return crypto.randomBytes(16).toString('hex').normalize();
 }
+
+export async function comparePasswords({
+	hashedPassword,
+	typedPassword,
+	userSalt,
+}: {
+	hashedPassword: string;
+	typedPassword: string;
+	userSalt: string;
+}) {
+	const typedHashedPassword = await hashPassword(typedPassword, userSalt);
+
+	//To prevent timing based attacks timinSafeEquals is used
+	return crypto.timingSafeEqual(
+		Buffer.from(typedHashedPassword, 'hex'),
+		Buffer.from(hashedPassword, 'hex'),
+	);
+}

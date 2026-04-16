@@ -1,22 +1,13 @@
-'use client';
-import { LogIn, Search, ShoppingCart, User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { LogIn, User } from 'lucide-react';
 import techLogo from '../../assets/img/TechPulseLaptopWhite.svg';
 import Image from 'next/image';
-import CartDrawer from '@/components/cartdrawer';
-import { useCart } from '@/lib/CartProvider';
 import Link from 'next/link';
+import ShoppingCart from './ShoppingCart';
+import { getUserFromSession } from '@/app/api/auth/core/session';
+import LogOutButton from './LogOutButton';
 
-const Navbar = () => {
-	const [cartOpen, setCartOpen] = useState(false);
-	const { cart, setCart } = useCart();
-
-	useEffect(() => {
-		// get cart from context for displaying it
-		localStorage.getItem('cart')
-			? setCart(JSON.parse(localStorage.getItem('cart')))
-			: '';
-	}, [setCart]);
+async function Navbar() {
+	const fullUser = await getUserFromSession({ withFullUser: true });
 
 	return (
 		<>
@@ -34,27 +25,26 @@ const Navbar = () => {
 								placeholder='Search...'
 							/>
 						</div> */}
-
-						<button onClick={() => setCartOpen(true)}>
-							{cart.length != 0 && (
-								<span className='absolute flex size-3'>
-									<span className='absolute left-5.5 inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75'></span>
-									<span className='absolute left-5.5 inline-flex size-3 rounded-full bg-sky-500'></span>
-								</span>
-							)}
-							<ShoppingCart size={30} />
-						</button>
-						<div className='flex-nowrap'>
-							<Link href='/login'>
-								<LogIn size={30} />
-							</Link>
-						</div>
+						{fullUser && (
+							<>
+								<User />
+								{fullUser.name}
+								<LogOutButton />
+							</>
+						)}
+						{!fullUser && (
+							<div className='flex-nowrap'>
+								<Link href='/login'>
+									<LogIn size={30} />
+								</Link>
+							</div>
+						)}
+						<ShoppingCart />
 					</div>
 				</div>
 			</nav>
-			{cartOpen && <CartDrawer handleCartOpen={setCartOpen} />}
 		</>
 	);
-};
+}
 
 export default Navbar;
