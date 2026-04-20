@@ -1,5 +1,5 @@
 import sql from 'better-sqlite3';
-const db = sql('products.db');
+const db = sql('techpulse.db');
 
 const dummyAmazonData = [
 	{
@@ -539,12 +539,14 @@ const dummyAmazonData = [
 		delivery: '$7.44 delivery Wed, Apr 1Ships to United Kingdom',
 		has_variations: false,
 	},
-]
+];
 
 //Delete when persistance is wanted
 db.prepare('DROP TABLE IF EXISTS products').run();
+db.prepare('DROP TABLE IF EXISTS users').run();
+db.prepare('DROP TABLE IF EXISTS sessions').run();
 
-//Populating Products Table
+//Creating Products Table
 db.prepare(
 	`
    CREATE TABLE IF NOT EXISTS products (
@@ -558,6 +560,33 @@ db.prepare(
        delivery TEXT,
 	   product_star_rating REAL NOT NULL,
        product_num_ratings INT NOT NULL
+    )
+`,
+).run();
+
+//Creating Users Table
+db.prepare(
+	`
+   CREATE TABLE IF NOT EXISTS users (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       name TEXT NOT NULL,
+       email TEXT NOT NULL,
+       password TEXT NOT NULL,
+       salt TEXT NOT NULL,
+       role TEXT NOT NULL DEFAULT 'user',
+       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+`,
+).run();
+
+//Creating Sessions Table
+db.prepare(
+	`
+   CREATE TABLE IF NOT EXISTS sessions (
+       sessionId TEXT PRIMARY KEY,
+       userId INTEGER NOT NULL,
+	   userRole TEXT NOT NULL,
+	   expiresAt TEXT DEFAULT (datetime('now', '+7 day'))
     )
 `,
 ).run();

@@ -7,9 +7,9 @@ const CartDrawer = ({ handleCartOpen }) => {
 
 	// const [cart, setCart] = useState(cartContext);
 
-	const handleProductAdd = item => {
+	const handleProductAdd = (item) => {
 		setCart(
-			cart.map(ci =>
+			cart.map((ci) =>
 				ci.product.asin == item.product.asin
 					? { ...item, quantity: item.quantity + 1 }
 					: ci,
@@ -17,12 +17,12 @@ const CartDrawer = ({ handleCartOpen }) => {
 		);
 	};
 
-	const handleProductDelete = item => {
-		setCart(prevCart => {
+	const handleProductDelete = (item) => {
+		setCart((prevCart) => {
 			if (item.quantity == 1) {
-				return prevCart.filter(ci => ci.product.asin != item.product.asin);
+				return prevCart.filter((ci) => ci.product.asin != item.product.asin);
 			} else {
-				return prevCart.map(ci => {
+				return prevCart.map((ci) => {
 					if (ci.product.asin == item.product.asin) {
 						return { ...ci, quantity: ci.quantity - 1 };
 					} else return ci;
@@ -32,7 +32,7 @@ const CartDrawer = ({ handleCartOpen }) => {
 	};
 
 	return (
-		<div className='fixed inset-0 bg-black/50 z-50'>
+		<div className='absolute inset-0 bg-black/50 z-50'>
 			<div className='absolute right-0 top-0 h-full w-60 bg-slate-900 p-6 overflow-y-auto'>
 				<div className='flex justify-between mb-6'>
 					<h2>Cart</h2>
@@ -45,7 +45,13 @@ const CartDrawer = ({ handleCartOpen }) => {
 
 				{cart.map((item, i) => (
 					<div key={i} className='my-4 flex flex-col items-center'>
-                        <Image className='rounded-xl' src={item.product.product_photo} alt={item.product.product_title} width={130} height={50}/>
+						<Image
+							className='rounded-xl'
+							src={item.product.product_photo}
+							alt={item.product.product_title}
+							width={130}
+							height={50}
+						/>
 						<p className='text-center'>{`${item.product.product_title.split(' ').slice(0, 6).join(' ')}...`}</p>
 						<p className='text-sm text-slate-400'>
 							{item.product.product_price}

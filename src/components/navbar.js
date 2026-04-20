@@ -1,27 +1,35 @@
-'use client';
-import { Search, ShoppingCart, User} from 'lucide-react';
-import { useEffect, useState } from 'react';
-import techLogo from '../../assets/img/TechPulseLaptopWhite.svg';
+import { LogIn, User } from 'lucide-react';
+import techLogoWhite from '../../assets/img/TechPulseLaptopWhite.svg';
+import techLogo from '../../assets/img/TechPulseLaptop.svg';
 import Image from 'next/image';
-import CartDrawer from '@/components/cartdrawer'
-import { useCart } from '@/lib/CartProvider';
 import Link from 'next/link';
+import ShoppingCart from './ShoppingCart';
+import { getUserFromSession } from '@/app/api/auth/core/session';
+import LogOutButton from './LogOutButton';
 
-const Navbar = () => {
-	const [cartOpen, setCartOpen] = useState(false);
-	const { setCart } = useCart();
-
-	useEffect(() => {
-	  // get cart from context for displaying it
-	  localStorage.getItem('cart') ? setCart(JSON.parse(localStorage.getItem('cart'))) : '';
-	}, [setCart])
-	
+async function Navbar() {
+	const fullUser = await getUserFromSession({ withFullUser: true });
 
 	return (
 		<>
-			<nav className='sticky top-0 w-full bg-slate-950/70 backdrop-blur border-b border-slate-800 z-50'>
+			<nav className='sticky top-0 w-full bg-[#F8FAFC] dark:bg-slate-950/70 backdrop-blur border-b border-slate-800 z-50'>
 				<div className='max-w-7xl mx-auto px-6 py-4 flex justify-between items-center'>
-					<Link href='/'><Image src={techLogo} alt='TechStore logo' width={250} priority/></Link>
+					<Link href='/'>
+						<Image
+							src={techLogoWhite}
+							alt='TechStore logo'
+							className='hidden dark:block'
+							width={250}
+							priority
+						/>
+						<Image
+							src={techLogo}
+							alt='TechStore logo'
+							className='dark:hidden'
+							width={250}
+							priority
+						/>
+					</Link>
 
 					<div className='hidden md:flex gap-6 items-center'>
 						{/* <div className='flex items-center bg-slate-900 px-3 py-2 rounded-xl'>
@@ -31,18 +39,30 @@ const Navbar = () => {
 								placeholder='Search...'
 							/>
 						</div> */}
-
-						<button onClick={() => setCartOpen(true)}>
-							<ShoppingCart />
-						</button>
-
-						<User />
+						{fullUser && (
+							<>
+								<div className='flex gap-1 justify-center'>
+									<User />
+									<p className='text-[#013f6b] dark:text-slate-50 font-bold'>
+										{fullUser.name}
+									</p>
+								</div>
+								<LogOutButton />
+							</>
+						)}
+						{!fullUser && (
+							<div className='flex-nowrap'>
+								<Link href='/login'>
+									<LogIn size={30} />
+								</Link>
+							</div>
+						)}
+						<ShoppingCart />
 					</div>
 				</div>
 			</nav>
-			{cartOpen && <CartDrawer handleCartOpen={setCartOpen} />}
 		</>
 	);
-};
+}
 
 export default Navbar;
