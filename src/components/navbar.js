@@ -1,5 +1,6 @@
 import { LogIn, User } from 'lucide-react';
-import techLogo from '../../assets/img/TechPulseLaptopWhite.svg';
+import techLogoWhite from '../../assets/img/TechPulseLaptopWhite.svg';
+import techLogo from '../../assets/img/TechPulseLaptop.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import ShoppingCart from './ShoppingCart';
@@ -11,10 +12,23 @@ async function Navbar() {
 
 	return (
 		<>
-			<nav className='sticky top-0 w-full bg-slate-950/70 backdrop-blur border-b border-slate-800 z-50'>
+			<nav className='sticky top-0 w-full bg-[#F8FAFC] dark:bg-slate-950/70 backdrop-blur border-b border-slate-800 z-50'>
 				<div className='max-w-7xl mx-auto px-6 py-4 flex justify-between items-center'>
 					<Link href='/'>
-						<Image src={techLogo} alt='TechStore logo' width={250} priority />
+						<Image
+							src={techLogoWhite}
+							alt='TechStore logo'
+							className='hidden dark:block'
+							width={250}
+							priority
+						/>
+						<Image
+							src={techLogo}
+							alt='TechStore logo'
+							className='dark:hidden'
+							width={250}
+							priority
+						/>
 					</Link>
 
 					<div className='hidden md:flex gap-6 items-center'>
@@ -27,8 +41,12 @@ async function Navbar() {
 						</div> */}
 						{fullUser && (
 							<>
-								<User />
-								{fullUser.name}
+								<div className='flex gap-1 justify-center'>
+									<User />
+									<p className='text-[#013f6b] dark:text-slate-50 font-bold'>
+										{fullUser.name}
+									</p>
+								</div>
 								<LogOutButton />
 							</>
 						)}

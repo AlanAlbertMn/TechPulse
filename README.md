@@ -8,7 +8,7 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 
 1. Auth (login/register)
    - Wishlist
-   - Theme toogle (saved for client)
+   - ~~Theme toogle~~
    - ~~User sign in and sign up page~~
    - ~~User registering on DB~~
    - ~~Navbar showing logged client info~~
@@ -19,6 +19,7 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
    - Separate page for results
    - Input sanitization and UI
    - Skeleton loading
+1. Fix /product page to fetch from API and save in DB to show different products
 1. ~~Separate components (to allow server-side rendering)~~
 1. ~~Skeleton loading~~
 1. ~~Add Product Details Page~~
