@@ -13,13 +13,13 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
    - ~~User registering on DB~~
    - ~~Navbar showing logged client info~~
 1. Add Checkout page
-   - Invoice generation and saving into DB for order information
+   - **Order creation and storage in DB (order and order_items) in webhook**
    - ~~Stripe implementation (or similar to simulate payment)~~
 1. Filtering (price, reviews)
    - Separate page for results
    - Input sanitization and UI
    - Skeleton loading
-1. Fix /product page to fetch from API and save in DB to show different products
+1. Fetch from realAPI in **/product page** and save the product in DB
 1. ~~Separate components (to allow server-side rendering)~~
 1. ~~Skeleton loading~~
 1. ~~Add Product Details Page~~
