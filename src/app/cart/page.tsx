@@ -71,44 +71,52 @@ const CartDrawer = () => {
 	};
 
 	return (
-		<div className='right-0 top-0 h-full w-xl mx-auto dark:bg-slate-900 py-6 flex flex-col items-center'>
+		<section className='right-0 top-0 h-full w-2/3 mt-12 mx-auto py-6 flex flex-col items-center'>
 			{cart.length === 0 && <h3 className='text-center text-4xl'>No items</h3>}
 
 			{cart.map((item, i) => (
-				<div key={i} className='my-4 flex flex-col items-center'>
+				<div
+					key={i}
+					className='py-10 w-2/3 flex gap-12 border-b border-slate-600'
+				>
 					<Image
-						className='rounded-xl'
 						src={item.product.product_photo}
 						alt={item.product.product_title}
-						width={300}
-						height={300}
+						width={350}
+						height={350}
 					/>
-					<p className='text-center'>{`${item.product.product_title.split(' ').slice(0, 6).join(' ')}...`}</p>
-					<p className='text-sm text-slate-400'>{item.product.product_price}</p>
-					<div className='flex gap-4 border-amber-300 border-2 rounded-2xl px-5 py-2'>
-						{item.quantity == 1 ? (
-							<button>
-								<Trash
-									className='cursor-pointer'
-									onClick={() => handleProductDelete(item)}
-								/>
-							</button>
-						) : (
-							<button>
-								<MinusCircleIcon
-									className='cursor-pointer'
-									onClick={() => handleProductDelete(item)}
-								/>
-							</button>
-						)}
-						<p className=''>{item.quantity}</p>
+					<div className='flex flex-col justify-evenly'>
+						<p className='text-xl'>
+							{`${item.product.product_title.substring(0, 75)}...`}
+						</p>
+						<p className='text-md text-slate-500 font-bold'>
+							{item.product.product_price}
+						</p>
+						<div className='flex gap-4 w-32 border-amber-300 border-2 rounded-2xl px-5 py-2'>
+							{item.quantity == 1 ? (
+								<button>
+									<Trash
+										className='cursor-pointer'
+										onClick={() => handleProductDelete(item)}
+									/>
+								</button>
+							) : (
+								<button>
+									<MinusCircleIcon
+										className='cursor-pointer'
+										onClick={() => handleProductDelete(item)}
+									/>
+								</button>
+							)}
+							<p className=''>{item.quantity}</p>
 
-						<button>
-							<PlusCircleIcon
-								className='cursor-pointer'
-								onClick={() => handleProductAdd(item)}
-							/>
-						</button>
+							<button>
+								<PlusCircleIcon
+									className='cursor-pointer'
+									onClick={() => handleProductAdd(item)}
+								/>
+							</button>
+						</div>
 					</div>
 				</div>
 			))}
@@ -134,7 +142,7 @@ const CartDrawer = () => {
 					</button>
 				</>
 			)}
-		</div>
+		</section>
 	);
 };
 

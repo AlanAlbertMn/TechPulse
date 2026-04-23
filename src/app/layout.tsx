@@ -32,7 +32,7 @@ export default function RootLayout({
 			className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
 		>
 			<CartProvider>
-				<body className='dark:bg-slate-950 min-h-full flex flex-col'>
+				<body>
 					<Navbar />
 					{children}
 					<ToastContainer />
