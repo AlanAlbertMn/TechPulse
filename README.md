@@ -12,8 +12,8 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
    - ~~User sign in and sign up page~~
    - ~~User registering on DB~~
    - ~~Navbar showing logged client info~~
-1. Add Checkout page
-   - **Order creation and storage in DB (order and order_items) in webhook**
+1. ~~Add Checkout page~~
+   - ~~Order creation and storage in DB (order and order_items) in webhook~~
    - ~~Stripe implementation (or similar to simulate payment)~~
 1. Filtering (price, reviews)
    - Separate page for results
