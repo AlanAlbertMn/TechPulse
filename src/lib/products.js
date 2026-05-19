@@ -1,10 +1,8 @@
-import sql from 'better-sqlite3';
+import { prisma } from '@/lib/prisma';
 
-const db = sql('techpulse.db');
-
-export function getProducts() {
+export async function getProducts() {
 	// new Promise((resolve) => setTimeout(resolve, 2000));
-	return db.prepare('SELECT * FROM products').all();
+	return await prisma.product.findMany();
 }
 
 export function getProduct(asin) {

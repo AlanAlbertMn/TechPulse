@@ -10,7 +10,7 @@ import BuyNowButton from './BuyNowButton';
 
 export default async function ProductsGrid() {
 	const user = (await getUserFromSession()) as sessionSchema;
-	const dummyProds = getProducts() as Product[];
+	const dummyProds = (await getProducts()) as Product[];
 
 	return (
 		<>
