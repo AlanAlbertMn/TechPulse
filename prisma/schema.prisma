@@ -20,18 +20,21 @@ model User {
 }
 
 model Product {
-  id                     Int     @id @default(autoincrement())
-  asin                   String  @unique
-  product_title          String
-  product_price          String
-  product_original_price String?
-  currency               String?
-  unit_price             String?
-  unit_count             Int?
-  product_photo          String
-  product_star_rating    String
-  product_num_ratings    Int
-  delivery               String?
+  id             Int      @id @default(autoincrement())
+  asin           String   @unique
+  title          String
+  price          Float
+  original_price Float?
+  thumbnail      String
+  images         String[] @default([])
+  rating         Float
+  num_ratings    Int
+  delivery       String?
+  sales_volume   String?
+  description    String?
+  about_product  String[] @default([])
+  brand          String?
+  stock          Int?
 }
 
 model Order {
