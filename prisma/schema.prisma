@@ -21,14 +21,17 @@ model User {
 
 model Product {
   id                     Int     @id @default(autoincrement())
-  product_title          String
   asin                   String  @unique
-  product_photo          String
+  product_title          String
   product_price          String
   product_original_price String?
-  delivery               String?
-  product_star_rating    Float
+  currency               String?
+  unit_price             String?
+  unit_count             Int?
+  product_photo          String
+  product_star_rating    String
   product_num_ratings    Int
+  delivery               String?
 }
 
 model Order {
