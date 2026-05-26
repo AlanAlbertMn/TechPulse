@@ -57,7 +57,7 @@ export default function AddToCartButton({
 	return (
 		<button
 			onClick={() => handleAddCart()}
-			className='w-50 rounded-xl font-semibold hover:scale-[1.02] transition-all mb-2 text-white bg-[#2563EB] hover:bg-[#1a4196] h-10'
+			className='w-full rounded-xl font-semibold hover:scale-[1.02] transition-all mb-2 text-white bg-[#2563EB] hover:bg-[#1a4196] h-10'
 		>
 			<span className='flex items-center gap-2 justify-center'>
 				<ShoppingCart /> Add to cart

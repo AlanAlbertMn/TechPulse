@@ -5,11 +5,11 @@ import { getProducts } from '@/lib/products';
 import AddToCartButton from '@/components/AddToCartButton';
 import Link from 'next/link';
 import { getUserFromSession } from '@/app/api/auth/core/session';
-import { sessionSchema } from '@/types/User';
 import BuyNowButton from './BuyNowButton';
+import { User } from '@prisma/client';
 
 export default async function ProductsGrid() {
-	const user = (await getUserFromSession()) as sessionSchema;
+	const user = (await getUserFromSession()) as User;
 	const dummyProds = (await getProducts()) as ProductPreview[];
 
 	return (
@@ -43,7 +43,7 @@ export default async function ProductsGrid() {
 					</Link>
 					<div className='flex flex-col justify-center items-center'>
 						<AddToCartButton product={product} />
-						{user && <BuyNowButton userId={user.userId} product={product} />}
+						{user && <BuyNowButton userId={user.id} product={product} />}
 					</div>
 				</div>
 			))}

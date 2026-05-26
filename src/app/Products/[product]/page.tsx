@@ -3,9 +3,9 @@ import ImageCarrousel from '@/components/ImageCarrousel';
 import { Star } from 'lucide-react';
 import BuyNowButton from '@/components/BuyNowButton';
 import { getUserFromSession } from '@/app/api/auth/core/session';
-import { sessionSchema } from '@/types/User';
 import { getProduct } from '@/lib/products';
 import { type ProductDetails } from '@/types/Product';
+import { User } from '@prisma/client';
 // import axios from 'axios';
 
 async function ProductDetails({
@@ -16,7 +16,7 @@ async function ProductDetails({
 	await new Promise((resolve) => setTimeout(resolve, 2000));
 	const { product } = await params;
 	console.log(product);
-	const user = (await getUserFromSession()) as sessionSchema;
+	const user = (await getUserFromSession()) as User;
 	const prod = (await getProduct(product)) as ProductDetails;
 	console.log(prod);
 
@@ -75,9 +75,11 @@ async function ProductDetails({
 							{prod.sales_volume && (
 								<p className='dark:text-slate-200'>{prod.sales_volume}</p>
 							)}
-							<AddToCartButton product={prod} />
+							<div className='w-50'>
+								<AddToCartButton product={prod} />
 
-							{user && <BuyNowButton userId={user.userId} product={prod} />}
+								{user && <BuyNowButton userId={user.id} product={prod} />}
+							</div>
 						</div>
 					</div>
 				</div>

@@ -8,14 +8,13 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String @unique
-  password String
-  role     String @default("user")
-
-  orders Order[]
-
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  salt      String
+  role      String   @default("user")
+  orders    Order[]
   createdAt DateTime @default(now())
 }
 
@@ -62,4 +61,11 @@ model OrderItem {
   image     String?
 
   order Order @relation(fields: [orderId], references: [id])
+}
+
+model Session {
+  sessionId  String   @id
+  userId     Int
+  userRole   String
+  lastSeenAt DateTime @default(now())
 }
