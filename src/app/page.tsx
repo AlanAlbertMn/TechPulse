@@ -1,8 +1,6 @@
 import ProductsGrid from '@/components/ProductsGrid';
 
 export default async function Ecommerce() {
-	console.log(process.env.DATABASE_URL);
-
 	return (
 		<div className='w-full dark:bg-slate-950'>
 			{/* HERO */}
