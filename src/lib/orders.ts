@@ -1,7 +1,6 @@
 'use server';
 
-import sql from 'better-sqlite3';
-const db = sql('techpulse.db');
+import { prisma } from '@/lib/prisma';
 
 type cartItem = {
 	price_data: {
@@ -17,41 +16,60 @@ type cartItem = {
 };
 
 export async function createOrder(
-	user_id: number,
+	user_id: string,
 	total_amount: number,
 	payment_method: string,
+	cart: cartItem[],
 	status?: string,
 ) {
 	if (status) {
-		return db
-			.prepare(
-				'INSERT INTO orders (user_id, total_amount, status, payment_method) VALUES (?, ?, ?, ?)',
-			)
-			.run(user_id, total_amount, status, payment_method);
+		return await prisma.order.create({
+			data: {
+				user: {
+					connect: {
+						id: Number(user_id),
+					},
+				},
+				totalAmount: total_amount,
+				status: 'paid',
+				items: {
+					create: cart.map((item) => ({
+						productId:
+							item.price_data.product_data.metadata.productId.toString(),
+						name: item.price_data.product_data.name,
+						price: item.price_data.unit_amount / 100,
+						quantity: item.quantity,
+						image: item.price_data.product_data.images[0],
+					})),
+				},
+			},
+			include: {
+				items: true,
+			},
+		});
 	} else {
-		return db
-			.prepare(
-				'INSERT INTO orders (user_id, total_amount, payment_method) VALUES (?, ?, ?)',
-			)
-			.run(user_id, total_amount, payment_method);
-	}
-}
-
-export async function populateOrderItems(orderId: number, cart: cartItem[]) {
-	for (const item of cart) {
-		console.log(item.price_data.product_data);
-
-		db.prepare(
-			`INSERT INTO order_items 
-        (order_id, product_id, name, price, quantity, image)
-        VALUES (?, ?, ?, ?, ?, ?)`,
-		).run(
-			orderId,
-			item.price_data.product_data.metadata.productId,
-			item.price_data.product_data.name,
-			item.price_data.unit_amount / 100,
-			item.quantity,
-			item.price_data.product_data.images[0] || '',
-		);
+		return await prisma.order.create({
+			data: {
+				user: {
+					connect: {
+						id: Number(user_id),
+					},
+				},
+				totalAmount: total_amount,
+				items: {
+					create: cart.map((item) => ({
+						productId:
+							item.price_data.product_data.metadata.productId.toString(),
+						name: item.price_data.product_data.name,
+						price: item.price_data.unit_amount / 100,
+						quantity: item.quantity,
+						image: item.price_data.product_data.images[0],
+					})),
+				},
+			},
+			include: {
+				items: true,
+			},
+		});
 	}
 }

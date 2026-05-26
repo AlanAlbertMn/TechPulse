@@ -17,7 +17,7 @@ export type signInSchema = {
 	password: string;
 };
 
-export type User = {
+export type UserSchema = {
 	id: number;
 	name: string;
 	email: string;
@@ -34,6 +34,6 @@ export enum Roles {
 export type sessionSchema = {
 	sessionId: string;
 	userId: number;
-	userRole: Roles;
-	expiresAt: string;
+	userRole: string;
+	lastSeenAt: Date;
 };

@@ -1,6 +1,7 @@
 'use server';
 import crypto from 'crypto';
-import { sessionSchema, User } from '@/types/User';
+// import { User } from '@/types/User';
+import { User } from '@prisma/client';
 import {
 	createUserSessionDB,
 	deleteUserSessionDB,
@@ -29,7 +30,7 @@ export async function getUserFromSession(withFullUser: boolean = false) {
 }
 
 async function getUserSessionById(sessionId: string) {
-	const user = (await findUserFromSessionId(sessionId)) as sessionSchema;
+	const user = await findUserFromSessionId(sessionId);
 	return user ? user : null;
 }
 

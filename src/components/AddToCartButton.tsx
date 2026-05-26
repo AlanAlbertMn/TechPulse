@@ -1,10 +1,15 @@
 'use client';
 import { useCart } from '@/lib/CartProvider';
-import { CartProps, Product } from '@/types/Product';
+import { CartProps, ProductPreview } from '@/types/Product';
+import { ShoppingCart } from 'lucide-react';
 import { useEffect } from 'react';
 import { Bounce, toast } from 'react-toastify';
 
-export default function AddToCartButton({ product }: { product: Product }) {
+export default function AddToCartButton({
+	product,
+}: {
+	product: ProductPreview;
+}) {
 	const { cart, setCart } = useCart();
 
 	useEffect(() => {
@@ -15,7 +20,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
 
 	const handleAddCart = () => {
 		// total and quantities should be added here?
-		const titleArray = product.product_title.split(' ').slice(0, 10).join(' ');
+		const titleArray = product.title.split(' ').slice(0, 10).join(' ');
 		const existingProd = cart.find(
 			(cartItem) => cartItem.product.asin == product.asin,
 		);
@@ -52,9 +57,11 @@ export default function AddToCartButton({ product }: { product: Product }) {
 	return (
 		<button
 			onClick={() => handleAddCart()}
-			className='w-full mb-2 text-white bg-[#2563EB] hover:bg-[#1a4196] rounded-4xl h-10'
+			className='w-full rounded-xl font-semibold hover:scale-[1.02] transition-all mb-2 text-white bg-[#2563EB] hover:bg-[#1a4196] h-10'
 		>
-			Add to cart
+			<span className='flex items-center gap-2 justify-center'>
+				<ShoppingCart /> Add to cart
+			</span>
 		</button>
 	);
 }
