@@ -6,6 +6,8 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 
 #### To-Do's
 
+1. Orders
+   - **A page where user orders can be found along with their items and total.**
 1. Auth (login/register)
    - Wishlist
    - ~~Theme toogle~~
@@ -29,7 +31,6 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 
 #### Improvements
 
-- Cart ping animation when adding new products
 - Loading animation for checkout
 - Possible development own backend server to save plenty of products and improve app's functionalities (comparing personal backend vs API with more API calls)
 - ~~Cart ping animation when adding new products~~
