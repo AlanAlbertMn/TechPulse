@@ -1,6 +1,6 @@
 'use server';
 
-import { signUpUser, User } from '@/types/User';
+import { signUpUser } from '@/types/User';
 import { prisma } from '@/lib/prisma';
 
 export async function getUser(email: string) {
