@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-import { createOrder, populateOrderItems } from '../../../lib/orders';
+import { createOrder } from '../../../lib/orders';
 
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -27,24 +27,25 @@ export async function POST(request) {
 
 	switch (event.type) {
 		case 'checkout.session.completed':
-			const userId = Number(event.data.object.metadata.userId);
+			const userId = event.data.object.metadata.userId;
 			const amount_total = event.data.object.amount_total / 100;
 			const status = event.data.object.status;
+			const cart = await JSON.parse(event.data.object.metadata.cart);
 
 			//Create new order and populate order items based on lastRowId
-			const result = await createOrder(userId, amount_total, 'card', status);
+			const result = await createOrder(
+				userId,
+				amount_total,
+				'card',
+				cart,
+				status,
+			);
 
 			if (result == null)
 				return NextResponse.json(
 					{ error: 'Unable to create new order' },
 					{ status: 400 },
 				);
-
-			const orderId = result.lastInsertRowid;
-			const cart = await JSON.parse(event.data.object.metadata.cart);
-
-			await populateOrderItems(orderId, cart);
-
 			break;
 
 		default:

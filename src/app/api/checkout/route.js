@@ -13,7 +13,7 @@ export async function POST(request) {
 				images: [item.product.thumbnail],
 				metadata: { productId: item.product.id },
 			},
-			unit_amount: Math.round(parseFloat(item.product.price) * 100),
+			unit_amount: Math.round(item.product.price * 100),
 		},
 		quantity: item.quantity,
 	}));
@@ -24,8 +24,8 @@ export async function POST(request) {
 		line_items: stripeCart,
 		mode: 'payment',
 		metadata: {
-			cart: JSON.stringify(stripeCart),
 			userId: body.userId,
+			cart: JSON.stringify(stripeCart),
 		},
 	});
 

@@ -1,16 +1,17 @@
 import Image from 'next/image';
 import { ProductPreview } from '@/types/Product';
+import { sessionSchema, UserSchema } from '@/types/User';
 import { Star } from 'lucide-react';
 import { getProducts } from '@/lib/products';
 import AddToCartButton from '@/components/AddToCartButton';
 import Link from 'next/link';
 import { getUserFromSession } from '@/app/api/auth/core/session';
 import BuyNowButton from './BuyNowButton';
-import { User } from '@prisma/client';
 
 export default async function ProductsGrid() {
-	const user = (await getUserFromSession()) as User;
+	const user = (await getUserFromSession()) as sessionSchema;
 	const dummyProds = (await getProducts()) as ProductPreview[];
+	// if (user) console.log(user.userId);
 
 	return (
 		<>
@@ -25,7 +26,8 @@ export default async function ProductsGrid() {
 								src={product.thumbnail}
 								alt={product.title}
 								fill
-								objectFit='contain'
+								style={{ objectFit: 'contain' }}
+								sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 							/>
 						</div>
 						<h3 className='font-semibold mt-2'>{`${product.title.substring(0, 75)}...`}</h3>
@@ -43,7 +45,7 @@ export default async function ProductsGrid() {
 					</Link>
 					<div className='flex flex-col justify-center items-center'>
 						<AddToCartButton product={product} />
-						{user && <BuyNowButton userId={user.id} product={product} />}
+						{user && <BuyNowButton userId={user.userId} product={product} />}
 					</div>
 				</div>
 			))}
