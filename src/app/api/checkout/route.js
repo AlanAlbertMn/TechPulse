@@ -19,8 +19,8 @@ export async function POST(request) {
 	}));
 
 	const session = await stripeClient.checkout.sessions.create({
-		success_url: process.env.NEXT_PUBLIC_URL + '/success',
-		cancel_url: process.env.NEXT_PUBLIC_URL + '/cart',
+		success_url: process.env.APP_URL + '/success',
+		cancel_url: process.env.APP_URL + '/cart',
 		line_items: stripeCart,
 		mode: 'payment',
 		metadata: {
