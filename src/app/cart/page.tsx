@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { CartProps } from '@/types/Product';
 import { redirect } from 'next/navigation';
 import { getUserFromSession } from '../api/auth/core/session';
-import { sessionSchema } from '@/types/User';
 import { useEffect, useState } from 'react';
+import { User } from '@prisma/client';
 
 const CartDrawer = () => {
 	const [userId, setUserId] = useState<number>();
@@ -15,9 +15,9 @@ const CartDrawer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = (await getUserFromSession()) as sessionSchema;
+				const response = (await getUserFromSession()) as User;
 				if (response) {
-					setUserId(response.userId);
+					setUserId(response.id);
 				}
 			} catch (error) {
 				console.error(error);
@@ -81,17 +81,17 @@ const CartDrawer = () => {
 				>
 					<Image
 						className='max-h-72 max-w-48 object-scale-down'
-						src={item.product.product_photo}
-						alt={item.product.product_title}
+						src={item.product.thumbnail}
+						alt={item.product.title}
 						width={350}
 						height={350}
 					/>
 					<div className='flex flex-col justify-evenly'>
 						<p className='text-xl'>
-							{`${item.product.product_title.substring(0, 75)}...`}
+							{`${item.product.title.substring(0, 75)}...`}
 						</p>
 						<p className='text-md text-slate-500 font-bold'>
-							{item.product.product_price}
+							${item.product.price}
 						</p>
 						<div className='flex gap-4 w-32 border-amber-300 border-2 rounded-2xl px-5 py-2'>
 							{item.quantity == 1 ? (
@@ -129,8 +129,7 @@ const CartDrawer = () => {
 							.reduce(
 								(cartTotal, currProd) =>
 									cartTotal +
-									Number(currProd.product.product_price!.replaceAll('$', '')) *
-										currProd.quantity,
+									Number(currProd.product.price!) * currProd.quantity,
 								0,
 							)
 							.toFixed(2)}

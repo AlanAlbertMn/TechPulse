@@ -1,6 +1,7 @@
-import { signInSchema, signUpSchema, signUpUser, User } from '@/types/User';
+import { signInSchema, signUpSchema, signUpUser } from '@/types/User';
 import { redirect } from 'next/navigation';
 import { createUser, getUser } from '@/lib/users';
+import { User } from '@prisma/client';
 import {
 	comparePasswords,
 	generateSalt,

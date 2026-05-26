@@ -1,13 +1,13 @@
 'use client';
 
-import { Product } from '@/types/Product';
+import { ProductPreview } from '@/types/Product';
 import { redirect } from 'next/navigation';
 
 const BuyNowButton = ({
 	product,
 	userId,
 }: {
-	product: Product;
+	product: ProductPreview;
 	userId: number;
 }) => {
 	const handlePay = async () => {
@@ -25,7 +25,7 @@ const BuyNowButton = ({
 	return (
 		<button
 			onClick={() => handlePay()}
-			className='w-full text-white bg-[#2563EB] hover:bg-[#1a4196] rounded-4xl h-10 mt-1'
+			className='w-full text-white bg-[#2563EB] hover:bg-[#1a4196] rounded-xl h-10 mt-1'
 		>
 			Buy now
 		</button>
