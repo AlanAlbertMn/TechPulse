@@ -543,8 +543,10 @@ const dummyAmazonData = [
 
 //Delete when persistance is wanted
 db.prepare('DROP TABLE IF EXISTS products').run();
-db.prepare('DROP TABLE IF EXISTS users').run();
+// db.prepare('DROP TABLE IF EXISTS users').run();
 db.prepare('DROP TABLE IF EXISTS sessions').run();
+db.prepare('DROP TABLE IF EXISTS order_items').run();
+db.prepare('DROP TABLE IF EXISTS orders').run();
 
 //Creating Products Table
 db.prepare(
@@ -588,6 +590,37 @@ db.prepare(
 	   userRole TEXT NOT NULL,
 	   expiresAt TEXT DEFAULT (datetime('now', '+7 day'))
     )
+`,
+).run();
+
+//Creating Orders Table
+db.prepare(
+	`
+   CREATE TABLE orders (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id INTEGER NOT NULL,
+		total_amount REAL NOT NULL,
+		status TEXT DEFAULT 'pending',
+		payment_method TEXT NOT NULL,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (user_id) REFERENCES users(id)
+	)
+`,
+).run();
+
+//Creating Order Items Table
+db.prepare(
+	`
+	CREATE TABLE order_items (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		order_id INTEGER NOT NULL,
+		product_id TEXT,
+		name TEXT NOT NULL,
+		price REAL NOT NULL,
+		quantity INTEGER NOT NULL,
+		image TEXT,
+		FOREIGN KEY (order_id) REFERENCES orders(id)
+	)
 `,
 ).run();
 

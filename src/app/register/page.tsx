@@ -56,7 +56,7 @@ const RegisterPage = () => {
 				>
 					<h2 className='text-4xl mb-6'>Create an account</h2>
 					<input
-						className='bg-slate-700 text-white px-6 py-2 rounded'
+						className='bg-[#d8d8d8] text-slate-950 dark:bg-slate-700 dark:text-white px-6 py-2 rounded'
 						placeholder='Name'
 						{...register('name')}
 						required
@@ -64,7 +64,7 @@ const RegisterPage = () => {
 						autoComplete={'name'}
 					/>
 					<input
-						className='bg-slate-700 text-white px-6 py-2 rounded'
+						className='bg-[#d8d8d8] text-slate-950 dark:bg-slate-700 dark:text-white px-6 py-2 rounded'
 						type='email'
 						placeholder='Email'
 						required
@@ -75,7 +75,7 @@ const RegisterPage = () => {
 						<p className='text-red-500'>{errors.email.message}</p>
 					)}
 					<input
-						className='bg-slate-700 text-white px-6 py-2 rounded'
+						className='bg-[#d8d8d8] text-slate-950 dark:bg-slate-700 dark:text-white px-6 py-2 rounded'
 						type='password'
 						placeholder='Password'
 						{...register('password')}
@@ -83,7 +83,7 @@ const RegisterPage = () => {
 						minLength={8}
 					></input>
 					<input
-						className='bg-slate-700 text-white px-6 py-2 rounded'
+						className='bg-[#d8d8d8] text-slate-950 dark:bg-slate-700 dark:text-white px-6 py-2 rounded'
 						type='password'
 						placeholder='Confirm password'
 						{...register('confirmPassword')}
@@ -91,7 +91,7 @@ const RegisterPage = () => {
 					></input>
 					<button
 						type='submit'
-						className='px-6 py-2 my-5 mx-auto rounded bg-cyan-800 text-white font-bold w-xs'
+						className='px-6 py-2 my-5 mx-auto rounded bg-[#2563EB] hover:bg-[#1a4196] cursor-pointer text-white font-bold w-xs'
 					>
 						Submit
 					</button>

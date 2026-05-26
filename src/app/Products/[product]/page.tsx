@@ -2,6 +2,9 @@ import AddToCartButton from '@/components/AddToCartButton';
 import ImageCarrousel from '@/components/ImageCarrousel';
 import { Star } from 'lucide-react';
 import { prodMock } from '../../../../assets/productDetailsMock';
+import BuyNowButton from '@/components/BuyNowButton';
+import { getUserFromSession } from '@/app/api/auth/core/session';
+import { sessionSchema } from '@/types/User';
 // import axios from 'axios';
 
 async function ProductDetails({
@@ -13,6 +16,7 @@ async function ProductDetails({
 	const prod = prodMock.data;
 	const { product } = await params;
 	console.log(product);
+	const user = (await getUserFromSession()) as sessionSchema;
 
 	// To consume the api directly
 	// const apiUrl = process.env.NEXT_PUBLIC_API_URL + 'product-details';
@@ -74,6 +78,8 @@ async function ProductDetails({
 						<p className='dark:text-slate-200'>{prod.sales_volume}</p>
 						<p className='mb-7 dark:text-slate-200'>{`Delivery on: ${prod.delivery_time} for ${prod.delivery_price}`}</p>
 						<AddToCartButton product={prod} />
+
+						{user && <BuyNowButton userId={user.userId} product={prod} />}
 					</div>
 				</div>
 			</div>

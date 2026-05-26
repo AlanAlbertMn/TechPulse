@@ -55,7 +55,7 @@ const LoginPage = () => {
 					<h2 className='text-4xl'>Login with email</h2>
 
 					<input
-						className='bg-slate-700 text-white px-6 py-2 rounded'
+						className='bg-[#d8d8d8] text-slate-950 dark:bg-slate-700 dark:text-white px-6 py-2 rounded'
 						placeholder='email'
 						{...register('email')}
 					/>
@@ -63,17 +63,18 @@ const LoginPage = () => {
 						<p className='text-red-500'>{errors.email.message}</p>
 					)}
 					<input
-						className='bg-slate-700 text-white px-6 py-2 rounded'
+						className='bg-[#d8d8d8] text-slate-950 dark:bg-slate-700 dark:text-white px-6 py-2 rounded'
 						type='password'
 						placeholder='password'
 						{...register('password')}
 					/>
-					<button className='w-xs mx-auto px-6 py-2 my-6 rounded bg-cyan-800 text-white font-bold'>
+					<button className='w-xs mx-auto px-6 py-2 my-6 rounded bg-[#2563EB] hover:bg-[#1a4196] cursor-pointer text-white font-bold'>
 						Login
 					</button>
 				</form>
-				<Link href='/register' className='text-xl'>
-					Create an account
+				<Link href='/register' className=''>
+					Not registered yet?{' '}
+					<span className='text-[#2563EB]'>Create an account</span>
 				</Link>
 			</div>
 		</section>

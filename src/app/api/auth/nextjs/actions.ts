@@ -24,11 +24,8 @@ export async function signIn(unsafeData: signInSchema) {
 }
 
 export async function signUp(unsafeData: signUpSchema) {
-	// if (!success) return 'Unable to create account'
 	const existingUser = await getUser(unsafeData.email);
 	if (existingUser) {
-		// console.log(existingUser);
-
 		return 'Account already exists for this email';
 	}
 

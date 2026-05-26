@@ -9,6 +9,8 @@ export default function LogOutButton() {
 			onClick={() => {
 				logOut().finally(redirect('/'));
 			}}
+			color='#2563EB'
+			size={25}
 		/>
 	);
 }
