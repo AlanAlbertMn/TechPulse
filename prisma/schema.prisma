@@ -58,7 +58,7 @@ model OrderItem {
   name      String
   price     Float
   quantity  Int
-  image     String?
+  image     String
 
   order Order @relation(fields: [orderId], references: [id])
 }

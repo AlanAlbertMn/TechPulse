@@ -2,7 +2,7 @@
 
 :root {
 	--background: #ffffff;
-	--foreground: #171717;
+	--foreground: lab(1.76974% 1.32743 -9.28855);
 }
 
 @theme inline {
@@ -12,7 +12,7 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--background: #202020;
+		--background: lab(1.76974% 1.32743 -9.28855);
 		--foreground: #ededed;
 	}
 }

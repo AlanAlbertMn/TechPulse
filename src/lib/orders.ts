@@ -15,6 +15,16 @@ type cartItem = {
 	quantity: number;
 };
 
+export async function getOrders(userId: number) {
+	return await prisma.order.findMany({
+		where: { userId },
+		include: { items: true },
+		orderBy: {
+			createdAt: 'desc',
+		},
+	});
+}
+
 export async function createOrder(
 	user_id: string,
 	total_amount: number,
