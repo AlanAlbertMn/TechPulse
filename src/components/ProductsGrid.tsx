@@ -1,13 +1,12 @@
 import Image from 'next/image';
 import { ProductPreview } from '@/types/Product';
-import { sessionSchema, UserSchema } from '@/types/User';
+import { sessionSchema } from '@/types/User';
 import { Star } from 'lucide-react';
 import { getProducts } from '@/lib/products';
 import AddToCartButton from '@/components/AddToCartButton';
 import Link from 'next/link';
 import { getUserFromSession } from '@/app/api/auth/core/session';
 import BuyNowButton from './BuyNowButton';
-import { User } from '@prisma/client';
 
 export default async function ProductsGrid() {
 	const user = (await getUserFromSession()) as sessionSchema;
@@ -46,7 +45,7 @@ export default async function ProductsGrid() {
 					</Link>
 					<div className='flex flex-col justify-center items-center'>
 						<AddToCartButton product={product} />
-						{user && <BuyNowButton userId={user.id} product={product} />}
+						{user && <BuyNowButton userId={user.userId} product={product} />}
 					</div>
 				</div>
 			))}
