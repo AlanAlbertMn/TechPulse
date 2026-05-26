@@ -9,25 +9,23 @@ export async function POST(request) {
 		price_data: {
 			currency: 'usd',
 			product_data: {
-				name: item.product.product_title.split(' ').slice(0, 5).join(' '),
-				images: [item.product.product_photo],
+				name: item.product.title.split(' ').slice(0, 5).join(' '),
+				images: [item.product.thumbnail],
 				metadata: { productId: item.product.id },
 			},
-			unit_amount: Math.round(
-				parseFloat(item.product.product_price.replace('$', '')) * 100,
-			),
+			unit_amount: Math.round(item.product.price * 100),
 		},
 		quantity: item.quantity,
 	}));
 
 	const session = await stripeClient.checkout.sessions.create({
-		success_url: process.env.NEXT_PUBLIC_URL + '/success',
-		cancel_url: process.env.NEXT_PUBLIC_URL + '/cart',
+		success_url: process.env.APP_URL + '/success',
+		cancel_url: process.env.APP_URL + '/cart',
 		line_items: stripeCart,
 		mode: 'payment',
 		metadata: {
-			cart: JSON.stringify(stripeCart),
 			userId: body.userId,
+			cart: JSON.stringify(stripeCart),
 		},
 	});
 

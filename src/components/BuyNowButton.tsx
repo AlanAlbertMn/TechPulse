@@ -13,7 +13,7 @@ const BuyNowButton = ({
 	const handlePay = async () => {
 		const res = await fetch('/api/checkout', {
 			method: 'POST',
-			body: JSON.stringify({ cart: [{ product, quantity: 1 }], userId }),
+			body: JSON.stringify({ userId, cart: [{ product, quantity: 1 }] }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -22,6 +22,7 @@ const BuyNowButton = ({
 
 		redirect(session.url);
 	};
+
 	return (
 		<button
 			onClick={() => handlePay()}

@@ -6,7 +6,7 @@ import { CartProps } from '@/types/Product';
 import { redirect } from 'next/navigation';
 import { getUserFromSession } from '../api/auth/core/session';
 import { useEffect, useState } from 'react';
-import { User } from '@prisma/client';
+import { sessionSchema } from '@/types/User';
 
 const CartDrawer = () => {
 	const [userId, setUserId] = useState<number>();
@@ -39,7 +39,6 @@ const CartDrawer = () => {
 				'Content-Type': 'application/json',
 			},
 		});
-		console.log(res);
 
 		const session = await res.json();
 
