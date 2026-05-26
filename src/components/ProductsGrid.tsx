@@ -7,6 +7,7 @@ import AddToCartButton from '@/components/AddToCartButton';
 import Link from 'next/link';
 import { getUserFromSession } from '@/app/api/auth/core/session';
 import BuyNowButton from './BuyNowButton';
+import { User } from '@prisma/client';
 
 export default async function ProductsGrid() {
 	const user = (await getUserFromSession()) as sessionSchema;
@@ -45,7 +46,7 @@ export default async function ProductsGrid() {
 					</Link>
 					<div className='flex flex-col justify-center items-center'>
 						<AddToCartButton product={product} />
-						{user && <BuyNowButton userId={user.userId} product={product} />}
+						{user && <BuyNowButton userId={user.id} product={product} />}
 					</div>
 				</div>
 			))}

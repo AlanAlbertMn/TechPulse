@@ -15,9 +15,9 @@ const CartDrawer = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = (await getUserFromSession()) as sessionSchema;
+				const response = (await getUserFromSession()) as User;
 				if (response) {
-					setUserId(response.userId);
+					setUserId(response.id);
 				}
 			} catch (error) {
 				console.error(error);
