@@ -1,6 +1,7 @@
 'use server';
 import crypto from 'crypto';
-import { sessionSchema, User } from '@/types/User';
+// import { User } from '@/types/User';
+import { User } from '@prisma/client';
 import {
 	createUserSessionDB,
 	deleteUserSessionDB,
