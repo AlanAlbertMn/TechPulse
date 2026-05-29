@@ -3,9 +3,8 @@ import ImageCarrousel from '@/components/ImageCarrousel';
 import { Star } from 'lucide-react';
 import { getProduct, updateProductWithDetails } from '@/lib/products';
 import { type ProductDetails } from '@/types/Product';
-import { prodMock } from '../../../../assets/productDetailsMock';
 import { Product } from '@prisma/client';
-// import axios from 'axios';
+import axios from 'axios';
 
 async function ProductDetails({
 	params,
@@ -18,16 +17,33 @@ async function ProductDetails({
 	console.log(prod);
 
 	if (prod.images.length === 0) {
-		const productDets = prodMock.data;
+		// To consume the api directly
+		const apiUrl = process.env.NEXT_PUBLIC_API_URL + 'product-details';
+		const paramsForAxios = {
+			asin: product,
+			country: 'US',
+		};
+		const headers = {
+			'x-rapidapi-key': process.env.API_KEY || '',
+			'x-rapidapi-host': process.env.API_HOST || '',
+			'Content-Type': 'application/json',
+		};
+		const { data } = await axios.get(apiUrl, {
+			headers,
+			params: paramsForAxios,
+		});
+		console.log(data.data);
+		const productDets = data.data;
+		console.log(productDets);
 		const productForUpdate: ProductDetails = {
 			asin: productDets.asin,
 			thumbnail: productDets.product_photo,
 			title: productDets.product_title,
 			rating: Number(productDets.product_star_rating),
-			price: parseFloat(productDets.product_price),
-			original_price: Number(
-				productDets.product_original_price.replace('$', ''),
-			),
+			price: parseFloat(productDets.product_price) || 8.0,
+			original_price:
+				Number(productDets.product_original_price?.replace('$', '')) ||
+				undefined,
 			description: productDets.product_description || undefined,
 			images: productDets.product_photos || undefined,
 			num_ratings: productDets.product_num_ratings,
@@ -42,21 +58,6 @@ async function ProductDetails({
 		console.log('images = 0');
 		prod = await updateProductWithDetails(productForUpdate);
 	} else console.log(prod.images);
-
-	// To consume the api directly
-	// const apiUrl = process.env.NEXT_PUBLIC_API_URL + 'product-details';
-	// const paramsForAxios = {
-	// 	asin: product,
-	// 	country: 'US',
-	// };
-	// const headers = {
-	// 	'x-rapidapi-key': process.env.API_KEY || '',
-	// 	'x-rapidapi-host': process.env.API_HOST || '',
-	// 	'Content-Type': 'application/json',
-	// };
-	// const { data } = await axios.get(apiUrl, { headers, params: paramsForAxios });
-	// console.log(data.data);
-	// const prod = data.data;
 
 	return (
 		<section className='bg-[#F8FAFC] text-slate-950/50 dark:bg-slate-950/70 w-full'>

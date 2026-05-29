@@ -1,6 +1,6 @@
 'use client';
 import { useCart } from '@/lib/CartProvider';
-import { CartProps, ProductPreview } from '@/types/Product';
+import { CartProps } from '@/types/Product';
 import { Product } from '@prisma/client';
 import { ShoppingCart } from 'lucide-react';
 import { useEffect } from 'react';

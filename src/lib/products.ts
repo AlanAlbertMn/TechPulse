@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { ProductDetails } from '@/types/Product';
 
 export async function getProducts() {
-	return await prisma.product.findMany();
+	return await prisma.product.findMany({ orderBy: { id: 'asc' } });
 }
 
 export async function getProduct(asin: string) {

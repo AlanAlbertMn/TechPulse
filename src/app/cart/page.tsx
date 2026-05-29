@@ -89,9 +89,14 @@ const CartDrawer = () => {
 						<p className='text-xl'>
 							{`${item.product.title.substring(0, 75)}...`}
 						</p>
-						<p className='text-md text-slate-500 font-bold'>
-							${item.product.price}
+						<p className='text-lg text-slate-500 font-bold'>
+							${item.product.price.toFixed(2)}
 						</p>
+						{item.product.original_price && (
+							<p className='text-md text-slate-500 font-bold line-through'>
+								${item.product.original_price.toFixed(2)}
+							</p>
+						)}
 						<div className='flex gap-4 w-32 border-amber-300 border-2 rounded-2xl px-5 py-2'>
 							{item.quantity == 1 ? (
 								<button>
