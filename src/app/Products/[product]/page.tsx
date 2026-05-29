@@ -1,8 +1,10 @@
 import AddToCartButton from '@/components/AddToCartButton';
 import ImageCarrousel from '@/components/ImageCarrousel';
 import { Star } from 'lucide-react';
-import { getProduct } from '@/lib/products';
+import { getProduct, updateProductWithDetails } from '@/lib/products';
 import { type ProductDetails } from '@/types/Product';
+import { prodMock } from '../../../../assets/productDetailsMock';
+import { Product } from '@prisma/client';
 // import axios from 'axios';
 
 async function ProductDetails({
@@ -11,7 +13,35 @@ async function ProductDetails({
 	params: Promise<{ product: string }>;
 }) {
 	const { product } = await params;
-	const prod = (await getProduct(product)) as ProductDetails;
+	console.log(product);
+	let prod = (await getProduct(product)) as Product;
+	console.log(prod);
+
+	if (prod.images.length === 0) {
+		const productDets = prodMock.data;
+		const productForUpdate: ProductDetails = {
+			asin: productDets.asin,
+			thumbnail: productDets.product_photo,
+			title: productDets.product_title,
+			rating: Number(productDets.product_star_rating),
+			price: parseFloat(productDets.product_price),
+			original_price: Number(
+				productDets.product_original_price.replace('$', ''),
+			),
+			description: productDets.product_description || undefined,
+			images: productDets.product_photos || undefined,
+			num_ratings: productDets.product_num_ratings,
+			delivery_price: productDets.delivery_price || 'FREE',
+			delivery_time: productDets.delivery_time || new Date().toDateString(),
+			sales_volume: productDets.sales_volume || undefined,
+			about_product: productDets.about_product || undefined,
+			brand: productDets.product_details.Brand || undefined,
+		};
+		console.log(productForUpdate);
+		//fetch from API and save into db
+		console.log('images = 0');
+		prod = await updateProductWithDetails(productForUpdate);
+	} else console.log(prod.images);
 
 	// To consume the api directly
 	// const apiUrl = process.env.NEXT_PUBLIC_API_URL + 'product-details';
@@ -80,8 +110,10 @@ async function ProductDetails({
 								)}
 							</div>
 							<div className='pt-10 flex flex-col gap-6'>
-								{prod.delivery && (
-									<p className='text-amber-50 text-end'>{prod.delivery}</p>
+								{prod.delivery_time && (
+									<p className='text-amber-50 text-end'>
+										{`Delivery for ${prod.delivery_price} on ${prod.delivery_time}`}
+									</p>
 								)}
 								<div className='w-full flex flex-col items-end'>
 									<div className='w-96'>

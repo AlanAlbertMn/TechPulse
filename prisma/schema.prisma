@@ -28,7 +28,8 @@ model Product {
   images         String[] @default([])
   rating         Float
   num_ratings    Int
-  delivery       String?
+  delivery_price String?
+  delivery_time  String?
   sales_volume   String?
   description    String?
   about_product  String[] @default([])

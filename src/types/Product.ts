@@ -1,9 +1,11 @@
+import { Product } from '@prisma/client';
+
 export interface ProductsProps {
 	products: ProductPreview[];
 }
 
 export interface CartProps {
-	product: ProductPreview;
+	product: Product;
 	quantity: number;
 }
 
@@ -33,10 +35,11 @@ export interface ProductPreview {
 }
 
 export interface ProductDetails extends ProductPreview {
-	description: string;
 	images: string[];
 	num_ratings: number;
-	delivery?: string;
+	description?: string;
+	delivery_price?: string;
+	delivery_time?: string;
 	sales_volume?: string;
 	about_product?: string[];
 	brand?: string;

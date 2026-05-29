@@ -1,15 +1,12 @@
 'use client';
 import { useCart } from '@/lib/CartProvider';
 import { CartProps, ProductPreview } from '@/types/Product';
+import { Product } from '@prisma/client';
 import { ShoppingCart } from 'lucide-react';
 import { useEffect } from 'react';
 import { Bounce, toast } from 'react-toastify';
 
-export default function AddToCartButton({
-	product,
-}: {
-	product: ProductPreview;
-}) {
+export default function AddToCartButton({ product }: { product: Product }) {
 	const { cart, setCart } = useCart();
 
 	useEffect(() => {

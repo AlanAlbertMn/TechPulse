@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const ImageCarrousel = ({
 	photo,
@@ -13,13 +13,6 @@ const ImageCarrousel = ({
 }) => {
 	const [mainPhoto, setMainPhoto] = useState<string>(photo);
 	const [tmpPhoto, setTmpPhoto] = useState<string>('');
-
-	useEffect(() => {
-		if (photoArr.length === 0) {
-			//fetch from API and save into db
-			console.log('fetch from api');
-		} else console.log(photoArr);
-	}, [photoArr]);
 
 	const handleHoverIn = (photo: string) => {
 		setTmpPhoto(mainPhoto);
@@ -45,7 +38,7 @@ const ImageCarrousel = ({
 				/>
 			</div>
 			{photoArr && (
-				<div className='w-full grid grid-cols-5 gap-3'>
+				<div className='w-full grid grid-cols-7 gap-3'>
 					{photoArr.map((photo) => (
 						<Image
 							className='w-full h-full rounded overflow-hidden cursor-pointer'
