@@ -43,9 +43,12 @@ async function Navbar() {
 							<>
 								<div className='flex gap-1 justify-center items-center'>
 									<UserCircle2 color='#2563EB' size={30} />
-									<p className='text-[#2563EB] dark:text-slate-50 font-bold'>
+									<Link
+										href='/userOrders'
+										className='text-[#2563EB] dark:text-slate-50 font-bold'
+									>
 										{fullUser.name}
-									</p>
+									</Link>
 								</div>
 								<div className='cursor-pointer'>
 									<LogOutButton />

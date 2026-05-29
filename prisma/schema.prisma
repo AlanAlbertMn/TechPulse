@@ -28,12 +28,12 @@ model Product {
   images         String[] @default([])
   rating         Float
   num_ratings    Int
-  delivery       String?
+  delivery_price String?
+  delivery_time  String?
   sales_volume   String?
   description    String?
   about_product  String[] @default([])
   brand          String?
-  stock          Int?
 }
 
 model Order {
@@ -58,7 +58,7 @@ model OrderItem {
   name      String
   price     Float
   quantity  Int
-  image     String?
+  image     String
 
   order Order @relation(fields: [orderId], references: [id])
 }
