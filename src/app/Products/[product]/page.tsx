@@ -1,11 +1,8 @@
 import AddToCartButton from '@/components/AddToCartButton';
 import ImageCarrousel from '@/components/ImageCarrousel';
 import { Star } from 'lucide-react';
-import BuyNowButton from '@/components/BuyNowButton';
-import { getUserFromSession } from '@/app/api/auth/core/session';
 import { getProduct } from '@/lib/products';
 import { type ProductDetails } from '@/types/Product';
-import { User } from '@prisma/client';
 // import axios from 'axios';
 
 async function ProductDetails({
@@ -13,12 +10,8 @@ async function ProductDetails({
 }: {
 	params: Promise<{ product: string }>;
 }) {
-	await new Promise((resolve) => setTimeout(resolve, 2000));
 	const { product } = await params;
-	console.log(product);
-	const user = (await getUserFromSession()) as User;
 	const prod = (await getProduct(product)) as ProductDetails;
-	console.log(prod);
 
 	// To consume the api directly
 	// const apiUrl = process.env.NEXT_PUBLIC_API_URL + 'product-details';
@@ -49,10 +42,18 @@ async function ProductDetails({
 							{/* {prod.product_details.Brand && (
 							<p>Brand: {prod.product_details.Brand}</p>
 						)} */}
-							<h2 className='text-2xl font-semibold py-5 max-w-175 leading-tight text-[#013f6b] dark:text-slate-200'>
+							<h2 className='text-2xl font-semibold py-3 max-w-175 leading-tight text-[#013f6b] dark:text-slate-200'>
 								{prod.title}
 							</h2>
-							<p className='py-3 dark:text-slate-200'>SKU: {prod.asin}</p>
+							{prod.brand && (
+								<small className='dark:text-slate-200'>{prod.brand}</small>
+							)}
+							<p className='py-1 dark:text-slate-200'>SKU: {prod.asin}</p>
+							{prod.sales_volume && (
+								<p className='py-1 text-xs font-bold dark:text-slate-200'>
+									{prod.sales_volume}
+								</p>
+							)}
 							<div className='flex items-center mb-5'>
 								<p className='pr-2 dark:text-slate-200'>{prod.rating}</p>
 								{[...Array(Math.round(prod.rating))].map((_, i) => (
@@ -64,21 +65,29 @@ async function ProductDetails({
 							</div>
 						</div>
 						<hr className='border-cyan-100' />
-						<div className='py-3'>
-							<h2 className='text-3xl text-amber-400 py-4'>${prod.price}</h2>
-							{prod.original_price && (
-								<p className='text-xs text-gray-400 pb-4'>
-									Previous price:{' '}
-									<span className='line-through'>{prod.original_price}</span>
-								</p>
-							)}
-							{prod.sales_volume && (
-								<p className='dark:text-slate-200'>{prod.sales_volume}</p>
-							)}
-							<div className='w-50'>
-								<AddToCartButton product={prod} />
-
-								{user && <BuyNowButton userId={user.id} product={prod} />}
+						<div className='py-3 grid grid-cols-2'>
+							<div className=''>
+								<h2 className='text-3xl text-slate-950 font-medium dark:text-amber-400 py-4'>
+									${prod.price.toFixed(2)}
+								</h2>
+								{prod.original_price && (
+									<p className='text-xs text-gray-400 pb-4'>
+										Previous price:{' '}
+										<span className='line-through'>
+											${prod.original_price.toFixed(2)}
+										</span>
+									</p>
+								)}
+							</div>
+							<div className='pt-10 flex flex-col gap-6'>
+								{prod.delivery && (
+									<p className='text-amber-50 text-end'>{prod.delivery}</p>
+								)}
+								<div className='w-full flex flex-col items-end'>
+									<div className='w-96'>
+										<AddToCartButton product={prod} />
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

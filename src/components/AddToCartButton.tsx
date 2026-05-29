@@ -49,7 +49,6 @@ export default function AddToCartButton({
 			pauseOnHover: false,
 			draggable: true,
 			progress: undefined,
-			theme: 'dark',
 			transition: Bounce,
 		});
 	};

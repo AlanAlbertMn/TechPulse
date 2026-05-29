@@ -40,5 +40,4 @@ export interface ProductDetails extends ProductPreview {
 	sales_volume?: string;
 	about_product?: string[];
 	brand?: string;
-	stock?: number;
 }

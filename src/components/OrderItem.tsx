@@ -1,11 +1,22 @@
+import { getProductById } from '@/lib/products';
 import { OrderItem } from '@prisma/client';
 import Image from 'next/image';
+import Link from 'next/link';
 
-const OrderItemCard = (item: OrderItem) => {
+const OrderItemCard = async (item: OrderItem) => {
+	const product = await getProductById(Number(item.productId));
 	return (
 		<div className='bg-slate-900 border border-slate-800 rounded-3xl p-5 hover:border-cyan-500/30 transition-all'>
 			<div className='flex gap-4'>
-				<img src={item.image} className='w-24 h-24 rounded-2xl object-cover' />
+				<div className='relative h-24 w-24'>
+					<Image
+						src={item.image}
+						alt={item.image}
+						fill
+						style={{ objectFit: 'contain' }}
+						className='w-24 h-24 rounded-2xl object-cover'
+					/>
+				</div>
 
 				<div className='flex-1'>
 					<div className='flex justify-between'>
@@ -18,13 +29,13 @@ const OrderItemCard = (item: OrderItem) => {
 
 					<div className='mt-6 flex items-center justify-between'>
 						<div>
-							<p className='text-slate-400 text-sm'>item Total</p>
+							<p className='text-slate-400 text-sm'>Item amount</p>
 
-							<p className='text-2xl font-bold'>${item.price}</p>
+							<p className='text-2xl font-bold'>${item.price.toFixed(2)}</p>
 						</div>
 
-						<button className='bg-cyan-500 hover:bg-cyan-400 px-4 py-2 rounded-xl text-sm font-medium transition-all'>
-							Details
+						<button className='w-24 rounded-xl hover:scale-[1.02] mb-2 text-white bg-[#2563EB] hover:bg-[#1a4196] h-10 text-sm font-medium transition-all'>
+							<Link href={`/products/${product?.asin}`}>Details</Link>
 						</button>
 					</div>
 				</div>

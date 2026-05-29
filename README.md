@@ -6,8 +6,8 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 
 #### To-Do's
 
-1. Orders
-   - **A page where user orders can be found along with their items and total.**
+1. ~~Orders~~
+   - ~~A page where user orders can be found along with their items and total.~~
 1. Auth (login/register)
    - Wishlist
    - ~~Theme toogle~~
@@ -18,26 +18,24 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
    - ~~Order creation and storage in DB (order and order_items) in webhook~~
    - ~~Stripe implementation (or similar to simulate payment)~~
 1. Filtering (price, reviews)
-   - Separate page for results
-   - Input sanitization and UI
-   - Skeleton loading
-1. Fetch from realAPI in **/product page** and save the product in DB
+   - Price
+     - Order
+     - Filter
+   - Search bar for exact matches
+1. ~~Input sanitization and UI~~
+1. ~~Skeleton loading~~
+1. Fetch from API in **/product page** and save the product in DB
 1. ~~Separate components (to allow server-side rendering)~~
 1. ~~Skeleton loading~~
 1. ~~Add Product Details Page~~
 1. ~~Toast notifications~~
 1. ~~Add DB functionality~~
 1. ~~Cart functionalities (persistance, total, manage dupes and quantities)~~
+1. Deals page
 
 #### Improvements
 
-- Loading animation for checkout
-- Possible development own backend server to save plenty of products and improve app's functionalities (comparing personal backend vs API with more API calls)
+- ~~Loading animation for checkout~~
 - ~~Cart ping animation when adding new products~~
-
-### Consumed API
-
-RapidApi - Real Time Amazon Data ->
-https://rapidapi.com/letscrape-6bRBa3QguO5/api/real-time-amazon-data
 
 ###### <i> by Alan Albert
