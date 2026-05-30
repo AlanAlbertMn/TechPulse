@@ -1,13 +1,13 @@
 'use client';
 
-import { ProductPreview } from '@/types/Product';
+import { Product } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
 const BuyNowButton = ({
 	product,
 	userId,
 }: {
-	product: ProductPreview;
+	product: Product;
 	userId: number;
 }) => {
 	const handlePay = async () => {

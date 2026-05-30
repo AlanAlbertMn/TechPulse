@@ -3,14 +3,14 @@ import { Star } from 'lucide-react';
 import AddToCartButton from '@/components/AddToCartButton';
 import Link from 'next/link';
 import BuyNowButton from './BuyNowButton';
-import { ProductPreview } from '@/types/Product';
 import { sessionSchema } from '@/types/User';
+import { Product } from '@prisma/client';
 
 const ProductCard = async ({
 	product,
 	user,
 }: {
-	product: ProductPreview;
+	product: Product;
 	user: sessionSchema;
 }) => {
 	return (

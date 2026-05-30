@@ -19,12 +19,12 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
    - ~~Stripe implementation (or similar to simulate payment)~~
 1. Filtering (price, reviews)
    - Price
-     - Order
-     - Filter
+   - Order
+   - Filter
    - Search bar for exact matches
 1. ~~Input sanitization and UI~~
 1. ~~Skeleton loading~~
-1. Fetch from API in **/product page** and save the product in DB
+1. ~~Fetch from API in /product page and save the product in DB~~
 1. ~~Separate components (to allow server-side rendering)~~
 1. ~~Skeleton loading~~
 1. ~~Add Product Details Page~~
