@@ -22,6 +22,8 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
    - Order
    - Filter
    - Search bar for exact matches
+1. Reviews
+1. Home Deal Slideshow
 1. ~~Input sanitization and UI~~
 1. ~~Skeleton loading~~
 1. ~~Fetch from API in /product page and save the product in DB~~
