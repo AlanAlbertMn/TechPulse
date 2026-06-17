@@ -17,10 +17,9 @@ Nextjs and Tailwind e-commerce project developed with TypeScript React
 1. ~~Add Checkout page~~
    - ~~Order creation and storage in DB (order and order_items) in webhook~~
    - ~~Stripe implementation (or similar to simulate payment)~~
-1. Filtering (price, reviews)
-   - Price
-   - Order
-   - Filter
+1. **Filtering (price, reviews)**
+   - **Ordering by Price**
+   - Ordering by Rating
    - Search bar for exact matches
 1. Reviews
 1. Home Deal Slideshow

@@ -1,4 +1,5 @@
 import ProductsGrid from '@/components/ProductsGrid';
+import Link from 'next/link';
 
 export default async function Ecommerce() {
 	return (
@@ -13,18 +14,22 @@ export default async function Ecommerce() {
 					Latest gadgets curated for you
 				</p>
 
-				<button className='px-6 py-3 rounded-2xl text-white bg-[#2563EB] hover:bg-[#1a4196]'>
-					Browse Deals
-				</button>
+				<Link href='/deals'>
+					<button className='px-6 py-3 rounded-2xl text-white bg-[#2563EB] hover:bg-[#1a4196]'>
+						Browse Deals
+					</button>
+				</Link>
 			</section>
 			<section className='min-h-screen my-10 mx-auto w-3/4'>
 				{/* PRODUCTS */}
 				<section className='max-w-7xl mx-auto'>
-					<h2 className='text-2xl text-[#013f6b] dark:text-slate-50 my-6 font-bold'>
-						Trending Products
-					</h2>
+					<div className='flex justify-between items-center'>
+						<h2 className='text-3xl text-[#013f6b] dark:text-slate-50 my-6 font-bold'>
+							Trending Products
+						</h2>
+					</div>
 					<div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6'>
-						<ProductsGrid />
+						<ProductsGrid sortBy='featured' />
 					</div>
 				</section>
 			</section>
