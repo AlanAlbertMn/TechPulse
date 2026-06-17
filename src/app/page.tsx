@@ -1,7 +1,15 @@
+import FilterInput from '@/components/FilterInput';
 import ProductsGrid from '@/components/ProductsGrid';
 import Link from 'next/link';
 
-export default async function Ecommerce() {
+export default async function Ecommerce({
+	searchParams,
+}: {
+	searchParams: Promise<{ sort?: string }>;
+}) {
+	const { sort } = await searchParams;
+	console.log(sort);
+
 	return (
 		<div className='w-full dark:bg-slate-950'>
 			{/* HERO */}
@@ -27,9 +35,10 @@ export default async function Ecommerce() {
 						<h2 className='text-3xl text-[#013f6b] dark:text-slate-50 my-6 font-bold'>
 							Trending Products
 						</h2>
+						<FilterInput />
 					</div>
 					<div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6'>
-						<ProductsGrid sortBy='featured' />
+						<ProductsGrid sortBy={sort} />
 					</div>
 				</section>
 			</section>

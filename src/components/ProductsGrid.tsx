@@ -12,6 +12,7 @@ export default async function ProductsGrid({
 }) {
 	const user = (await getUserFromSession()) as sessionSchema;
 	const dummyProds = (await getProducts()) as Product[];
+	console.log(sortBy);
 
 	let sorted = dummyProds;
 	if (sortBy !== 'featured' || undefined) {
@@ -26,7 +27,7 @@ export default async function ProductsGrid({
 	return (
 		<>
 			{sorted.map((product: Product) => (
-				<ProductCard key={product.asin} product={product} user={user} />
+				<ProductCard key={product.id} product={product} user={user} />
 			))}
 		</>
 	);
