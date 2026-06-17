@@ -6,7 +6,7 @@ import BuyNowButton from './BuyNowButton';
 import { sessionSchema } from '@/types/User';
 import { Product } from '@prisma/client';
 
-const ProductCard = async ({
+const ProductCard = ({
 	product,
 	user,
 }: {

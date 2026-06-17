@@ -15,9 +15,10 @@ export default async function ProductsGrid({
 	console.log(sortBy);
 
 	let sorted = dummyProds;
-	if (sortBy !== 'featured' || undefined) {
+	if (sortBy && sortBy !== 'featured') {
 		sorted = [...dummyProds].sort((a, b) => {
 			if (sortBy === 'price-asc') return a.price - b.price;
+			if (sortBy === 'price-desc') return b.price - a.price;
 			if (sortBy === 'rating-desc') return b.rating - a.rating;
 			if (sortBy === 'name-asc') return a.title.localeCompare(b.title);
 			return b.price - a.price;

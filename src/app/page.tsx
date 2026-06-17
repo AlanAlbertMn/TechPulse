@@ -1,14 +1,12 @@
-import FilterInput from '@/components/FilterInput';
-import ProductsGrid from '@/components/ProductsGrid';
+import ProductsBrowser from '@/components/ProductsBrowser';
+import { getProducts } from '@/lib/products';
+import { getUserFromSession } from '@/app/api/auth/core/session';
+import { sessionSchema } from '@/types/User';
 import Link from 'next/link';
 
-export default async function Ecommerce({
-	searchParams,
-}: {
-	searchParams: Promise<{ sort?: string }>;
-}) {
-	const { sort } = await searchParams;
-	console.log(sort);
+export default async function Ecommerce() {
+	const products = await getProducts();
+	const user = (await getUserFromSession()) as sessionSchema;
 
 	return (
 		<div className='w-full dark:bg-slate-950'>
@@ -29,17 +27,8 @@ export default async function Ecommerce({
 				</Link>
 			</section>
 			<section className='min-h-screen my-10 mx-auto w-3/4'>
-				{/* PRODUCTS */}
 				<section className='max-w-7xl mx-auto'>
-					<div className='flex justify-between items-center'>
-						<h2 className='text-3xl text-[#013f6b] dark:text-slate-50 my-6 font-bold'>
-							Trending Products
-						</h2>
-						<FilterInput />
-					</div>
-					<div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6'>
-						<ProductsGrid sortBy={sort} />
-					</div>
+					<ProductsBrowser products={products} user={user} />
 				</section>
 			</section>
 			{/* FOOTER */}
