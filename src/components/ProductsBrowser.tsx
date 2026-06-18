@@ -1,10 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Product } from '@prisma/client';
+import { useMemo, useState, useEffect } from 'react';
+import type { Product } from '@prisma/client';
 import ProductCard from './ProductCard';
-import { sessionSchema } from '@/types/User';
-import { SortOption } from '@/types/Sort';
+import type { sessionSchema } from '@/types/User';
+import type { SortOption } from '@/types/Sort';
 
 type ProductsBrowserProps = {
 	products: Product[];
@@ -16,34 +16,23 @@ export default function ProductsBrowser({
 	user,
 }: ProductsBrowserProps) {
 	const [sortBy, setSortBy] = useState<SortOption>('featured');
-	const [filteredProducts, setFilteredProducts] = useState(products);
+	const [searchTerm, setSearchTerm] = useState('');
+	const [debouncedSearch, setDebouncedSearch] = useState('');
 
-	const debounce = (onChange: React.ChangeEvent<HTMLInputElement>) => {
-		let timeout: ReturnType<typeof setTimeout>;
-		return (e) => {
-			const form = e.currentTarget.value;
-			clearTimeout(timeout);
-			timeout = setTimeout(() => {
-				onChange(form);
-			}, 1000);
-		};
-	};
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			setDebouncedSearch(searchTerm);
+		}, 500);
 
-	const handleSearch = async (value: string) => {
-		console.log(value);
-		try {
-			const filtered = products.filter((product) =>
-				product.title.toLowerCase().includes(value.toLowerCase()),
-			);
-			console.log(filtered);
-			setFilteredProducts(filtered);
-		} catch (error) {
-			console.error('Error fetching data:', error);
-		}
-	};
+		return () => clearTimeout(timeout);
+	}, [searchTerm]);
 
-	const sortedProducts = useMemo(() => {
-		const copy = [...filteredProducts];
+	const filteredAndSortedProducts = useMemo(() => {
+		const filtered = products.filter((product) =>
+			product.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
+		);
+
+		const copy = [...filtered];
 
 		switch (sortBy) {
 			case 'price-asc':
@@ -62,26 +51,33 @@ export default function ProductsBrowser({
 			default:
 				return copy;
 		}
-	}, [filteredProducts, sortBy]);
+	}, [products, debouncedSearch, sortBy]);
 
 	return (
 		<>
-			<div className='flex justify-between items-center'>
-				<h2 className='text-3xl text-[#013f6b] dark:text-slate-50 my-6 font-bold'>
+			<div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+				<h2 className='my-6 text-3xl font-bold text-[#013f6b] dark:text-slate-50'>
 					Trending Products
 				</h2>
-				<div className='flex items-center gap-2'>
+
+				<div className='flex flex-col gap-3 sm:flex-row'>
 					<input
-						className='rounded-xl border border-slate-800 bg-slate-900 px-4 h-12 text-sm text-slate-200 outline-none hover:border-cyan-500/40'
-						onChange={debounce((e) => handleSearch(e))}
-						placeholder='Search for something...'
+						value={searchTerm}
+						onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+							setSearchTerm(event.target.value)
+						}
+						placeholder='Search in TechPulse'
 						type='text'
+						className='h-12 rounded-xl border border-slate-800 bg-slate-900 px-4 text-sm text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
 					/>
+
 					<select
-						className='rounded-xl border border-slate-800 bg-slate-900 px-4 h-12 text-sm text-slate-200 outline-none hover:border-cyan-500/40'
-						onChange={(event) => setSortBy(event.target.value as SortOption)}
-						spellCheck='false'
 						value={sortBy}
+						onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+							setSortBy(event.target.value as SortOption)
+						}
+						spellCheck='false'
+						className='h-12 rounded-xl border border-slate-800 bg-slate-900 px-4 text-sm text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
 					>
 						<option value='featured'>Featured</option>
 						<option value='price-asc'>Price: Low to High</option>
@@ -92,11 +88,23 @@ export default function ProductsBrowser({
 				</div>
 			</div>
 
-			<div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6'>
-				{sortedProducts.map((product) => (
-					<ProductCard key={product.id} product={product} user={user} />
-				))}
-			</div>
+			{filteredAndSortedProducts.length === 0 ? (
+				<div className='rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center'>
+					<p className='text-lg font-semibold text-slate-100'>
+						No products found
+					</p>
+
+					<p className='mt-2 text-sm text-slate-400'>
+						Try another search term.
+					</p>
+				</div>
+			) : (
+				<div className='grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-4'>
+					{filteredAndSortedProducts.map((product) => (
+						<ProductCard key={product.id} product={product} user={user} />
+					))}
+				</div>
+			)}
 		</>
 	);
 }
