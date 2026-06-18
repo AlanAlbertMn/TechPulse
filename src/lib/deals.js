@@ -1,4 +1,4 @@
-export default deals = {
+export const deals = {
 	status: 'OK',
 	request_id: '5c62ec73-5e4c-4a3e-a58f-398ec421f5e5',
 	parameters: {
