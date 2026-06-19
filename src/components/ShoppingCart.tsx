@@ -29,7 +29,7 @@ export default function ShoppingCart() {
 					<span className='absolute left-2.5 inline-flex size-4 rounded-full bg-sky-500'></span>
 				</span>
 			)}
-			<ShoppingCartIcon color='#3d7aff' className='cursor-pointer' size={30} />
+			<ShoppingCartIcon color='#0369A1' className='cursor-pointer' size={30} />
 		</button>
 	);
 }

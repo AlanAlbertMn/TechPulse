@@ -12,7 +12,7 @@ async function Navbar() {
 
 	return (
 		<>
-			<nav className='sticky top-0 w-full shadow-md outline-2 outline-zinc-200 dark:outline-[#253648] backdrop-blur-xl bg-white dark:bg-slate-950/70 border-b-0 z-50'>
+			<nav className='sticky top-0 w-full shadow-sm outline-2 outline-zinc-200 dark:outline-[#253648] backdrop-blur-xl bg-white dark:bg-slate-950/70 border-b-0 z-50'>
 				<div className='max-w-7xl mx-auto px-6 py-4 flex justify-between items-center'>
 					<Link href='/'>
 						<Image
@@ -32,20 +32,13 @@ async function Navbar() {
 					</Link>
 
 					<div className='hidden md:flex gap-6 items-center'>
-						{/* <div className='flex items-center bg-slate-900 px-3 py-2 rounded-xl'>
-							<Search size={16} />
-							<input
-								className='bg-transparent ml-2 outline-none text-sm'
-								placeholder='Search...'
-							/>
-						</div> */}
 						{fullUser && (
 							<>
 								<div className='flex gap-1 justify-center items-center'>
-									<UserCircle2 color='#2563EB' size={30} />
+									<UserCircle2 color='#0369A1' size={30} />
 									<Link
 										href='/userOrders'
-										className='text-[#2563EB] dark:text-slate-50 font-bold'
+										className='text-sky-900 dark:text-slate-50 font-bold'
 									>
 										{fullUser.name}
 									</Link>
@@ -58,7 +51,7 @@ async function Navbar() {
 						{!fullUser && (
 							<div className='flex-nowrap'>
 								<Link href='/login'>
-									<LogIn color='#2563EB' size={30} />
+									<LogIn color='#0369A1' size={30} />
 								</Link>
 							</div>
 						)}

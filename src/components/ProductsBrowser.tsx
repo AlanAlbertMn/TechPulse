@@ -68,7 +68,7 @@ export default function ProductsBrowser({
 						}
 						placeholder='Search in TechPulse'
 						type='text'
-						className='h-12 rounded-xl border border-slate-800 bg-slate-900 px-4 text-sm text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
+						className='h-12 rounded-xl border border-slate-500 dark:border-slate-800 dark:bg-slate-900 px-4 text-sm dark:text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
 					/>
 
 					<select
@@ -77,7 +77,7 @@ export default function ProductsBrowser({
 							setSortBy(event.target.value as SortOption)
 						}
 						spellCheck='false'
-						className='h-12 rounded-xl border border-slate-800 bg-slate-900 px-4 text-sm text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
+						className='h-12 rounded-xl border border-slate-500 dark:border-slate-800 dark:bg-slate-900 px-4 text-sm dark:text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
 					>
 						<option value='featured'>Featured</option>
 						<option value='price-asc'>Price: Low to High</option>
@@ -89,9 +89,9 @@ export default function ProductsBrowser({
 			</div>
 
 			{filteredAndSortedProducts.length === 0 ? (
-				<div className='rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center'>
-					<p className='text-lg font-semibold text-slate-100'>
-						No products found
+				<div className='rounded-3xl border bg-slate-50 text-slate-900 dark:border-slate-800 dark:bg-slate-900 p-10 text-center'>
+					<p className='text-lg font-semibold dark:text-slate-100'>
+						{`No products including '${searchTerm}'`}
 					</p>
 
 					<p className='mt-2 text-sm text-slate-400'>
