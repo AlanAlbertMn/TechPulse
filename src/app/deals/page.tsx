@@ -21,7 +21,9 @@ const DealsPage = async ({
 	return (
 		<section className='max-w-7xl mx-auto py-10'>
 			<div className='flex  justify-between items-center'>
-				<h1 className='text-4xl my-6'>Deals</h1>
+				<h1 className='my-6 text-4xl font-bold text-[#013f6b] dark:text-slate-50'>
+					Latest Deals
+				</h1>
 				<FilterInput />
 			</div>
 

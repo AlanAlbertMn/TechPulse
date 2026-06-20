@@ -68,7 +68,7 @@ export default function ProductsBrowser({
 						}
 						placeholder='Search in TechPulse'
 						type='text'
-						className='h-12 rounded-xl border border-slate-500 dark:border-slate-800 dark:bg-slate-900 px-4 text-sm dark:text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
+						className='rounded-xl border border-slate-400 dark:border-slate-800 dark:bg-slate-900 px-4 h-12 text-sm text-slate-600 dark:text-slate-200 outline-none hover:border-amber-500'
 					/>
 
 					<select
@@ -77,7 +77,7 @@ export default function ProductsBrowser({
 							setSortBy(event.target.value as SortOption)
 						}
 						spellCheck='false'
-						className='h-12 rounded-xl border border-slate-500 dark:border-slate-800 dark:bg-slate-900 px-4 text-sm dark:text-slate-200 outline-none transition-all hover:border-cyan-500/40 focus:border-cyan-500'
+						className='rounded-xl border border-slate-400 dark:border-slate-800 dark:bg-slate-900 px-4 h-12 text-sm text-slate-600 dark:text-slate-200 outline-none hover:border-amber-500'
 					>
 						<option value='featured'>Featured</option>
 						<option value='price-asc'>Price: Low to High</option>

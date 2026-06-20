@@ -29,7 +29,7 @@ const FilterInput = () => {
 		<select
 			value={sortBy}
 			onChange={handleChange}
-			className='rounded-xl border border-slate-800 bg-slate-900 px-4 h-12 text-sm text-slate-200 outline-none hover:border-cyan-500/40'
+			className='rounded-xl border border-slate-400 dark:border-slate-800 dark:bg-slate-900 px-4 h-12 text-sm text-slate-600 dark:text-slate-200 outline-none hover:border-amber-500'
 		>
 			<option value='featured'>Featured</option>
 			<option value='price-asc'>Price: Low to High</option>
