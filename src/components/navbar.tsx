@@ -18,13 +18,13 @@ async function Navbar() {
 					<Link href='/'>
 						<Image
 							src={techLogoWhite}
-							alt='TechStore logo'
+							alt='TechPulse logo'
 							className='hidden dark:block w-2/3 md:w-1/4'
 							priority
 						/>
 						<Image
 							src={techLogo}
-							alt='TechStore logo'
+							alt='TechPulse logo'
 							className='dark:hidden'
 							width={200}
 							priority

@@ -1,14 +1,14 @@
-'use server';
+import 'server-only';
 
 import { signUpUser } from '@/types/User';
 import { prisma } from '@/lib/prisma';
 
 export async function getUser(email: string) {
-	return await prisma.user.findFirst({ where: { email } });
+	return await prisma.user.findUnique({ where: { email } });
 }
 
 export async function getUserById(id: number) {
-	return await prisma.user.findFirst({ where: { id } });
+	return await prisma.user.findUnique({ where: { id } });
 }
 
 export async function createUser(user: signUpUser) {

@@ -3,39 +3,30 @@ import { MinusCircleIcon, PlusCircleIcon, Trash } from 'lucide-react';
 import { useCart } from '@/lib/CartProvider';
 import Image from 'next/image';
 import { CartProps } from '@/types/Product';
-import { redirect } from 'next/navigation';
-import { getUserFromSession } from '../api/auth/core/session';
-import { useEffect, useState } from 'react';
-import { sessionSchema } from '@/types/User';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 const CartDrawer = () => {
-	const [userId, setUserId] = useState<number>();
 	const { cart, setCart } = useCart();
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = (await getUserFromSession()) as sessionSchema;
-				if (response) {
-					setUserId(response.userId);
-				}
-			} catch (error) {
-				console.error(error);
-			}
-		};
-
-		fetchData();
-	}, []);
-
-	useEffect(() => {
-		localStorage.setItem('cart', JSON.stringify(cart));
-	}, [cart]);
+	const router = useRouter();
 
 	const handlePay = async () => {
-		console.log('userId', userId);
+		// Only ids + quantities are sent; the server looks up prices and the
+		// logged-in user itself.
+		const res = await fetch('/api/checkout', {
+			method: 'POST',
+			body: JSON.stringify({
+				cart: cart.map((item) => ({
+					product: { id: item.product.id },
+					quantity: item.quantity,
+				})),
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
 
-		if (userId == null) {
+		if (res.status === 401) {
 			toast.info(
 				'Please create an account first to keep track of your order. Or login if you already have an account.',
 				{
@@ -44,27 +35,27 @@ const CartDrawer = () => {
 					closeOnClick: true,
 				},
 			);
-			redirect('/register');
+			router.push('/register');
+			return;
 		}
 
-		const res = await fetch('/api/checkout', {
-			method: 'POST',
-			body: JSON.stringify({ cart, userId }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
+		const data = await res.json();
+		if (!res.ok || !data.url) {
+			toast.error(data.error ?? 'Unable to start checkout', {
+				position: 'bottom-right',
+			});
+			return;
+		}
 
-		const session = await res.json();
-
-		redirect(session.url);
+		// redirect() doesn't work in event handlers; Stripe is an external URL
+		window.location.assign(data.url);
 	};
 
 	const handleProductAdd = (item: CartProps) => {
-		setCart(
-			cart.map((ci) =>
+		setCart((prevCart) =>
+			prevCart.map((ci) =>
 				ci.product.asin == item.product.asin
-					? { ...item, quantity: item.quantity + 1 }
+					? { ...ci, quantity: ci.quantity + 1 }
 					: ci,
 			),
 		);
@@ -88,9 +79,9 @@ const CartDrawer = () => {
 		<section className='right-0 top-0 h-full w-2/3 mt-12 mx-auto py-6 flex flex-col items-center'>
 			{cart.length === 0 && <h3 className='text-center text-4xl'>No items</h3>}
 
-			{cart.map((item, i) => (
+			{cart.map((item) => (
 				<div
-					key={i}
+					key={item.product.asin}
 					className='py-10 w-2/3 flex gap-12 border-b border-slate-600'
 				>
 					<Image
@@ -102,7 +93,9 @@ const CartDrawer = () => {
 					/>
 					<div className='flex flex-col justify-evenly'>
 						<p className='text-xl'>
-							{`${item.product.title.substring(0, 75)}...`}
+							{item.product.title.length > 75
+								? `${item.product.title.substring(0, 75)}...`
+								: item.product.title}
 						</p>
 						<p className='text-lg text-slate-500 font-bold'>
 							${item.product.price.toFixed(2)}

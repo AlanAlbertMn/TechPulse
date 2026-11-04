@@ -1,6 +1,6 @@
 {
-	"name": "e-commerce",
-	"version": "0.1.0",
+	"name": "TechPulse",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
@@ -8,9 +8,6 @@
 		"start": "next start",
 		"lint": "eslint",
 		"db-seed": "prisma db seed"
-	},
-	"prisma": {
-		"seed": "node prisma/seed.ts"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.19.3",
@@ -20,30 +17,26 @@
 		"lucide-react": "^0.577.0",
 		"next": "^16.2.4",
 		"pg": "^8.21.0",
-		"postcss": "^8.5.8",
 		"prisma": "^6.19.3",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
 		"react-hook-form": "^7.72.1",
 		"react-loading-skeleton": "^3.5.0",
 		"react-toastify": "^11.0.5",
+		"server-only": "^0.0.1",
 		"stripe": "^22.0.2"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4.2.2",
-		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"babel-plugin-react-compiler": "1.0.0",
+		"dotenv": "^18.0.9",
 		"eslint": "^9",
 		"eslint-config-next": "16.2.0",
+		"postcss": "^8.5.8",
 		"tailwindcss": "^4.2.2",
 		"typescript": "^5"
-	},
-	"browser": {
-		"fs": false,
-		"os": false,
-		"path": false
 	}
 }

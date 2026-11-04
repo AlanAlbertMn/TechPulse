@@ -1,10 +1,10 @@
 'use client';
-import { signUpSchema } from '@/types/User';
+import { EXISTING_ACCOUNT, signUpSchema } from '@/types/User';
 import Link from 'next/link';
 import { Resolver, SubmitErrorHandler, useForm } from 'react-hook-form';
-import { EXISTING_ACCOUNT, signUp } from '../api/auth/nextjs/actions';
+import { signUp } from '../api/auth/nextjs/actions';
 import { toast } from 'react-toastify';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const resolver: Resolver<signUpSchema> = async (values) => {
 	//TODO - Add passwords are equal validation
@@ -27,25 +27,28 @@ const RegisterPage = () => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<signUpSchema>({ resolver });
+	const router = useRouter();
 
 	async function onSubmit(data: signUpSchema) {
-		const user = await signUp(data);
-		if (user === EXISTING_ACCOUNT) {
-			toast.info(user, {
+		// On success the server action redirects to '/', so only errors come back
+		const message = await signUp(data);
+		if (!message) return;
+		if (message === EXISTING_ACCOUNT) {
+			toast.info(message, {
 				position: 'bottom-right',
 				closeOnClick: true,
 				pauseOnHover: false,
 				theme: 'colored',
 			});
-			redirect('/login');
-		} else if (user === 'Unable to create account') {
-			toast.error(user, {
+			router.push('/login');
+		} else {
+			toast.error(message, {
 				position: 'bottom-right',
 				closeOnClick: true,
 				pauseOnHover: false,
 				theme: 'colored',
 			});
-		} else redirect('/');
+		}
 	}
 
 	const onError: SubmitErrorHandler<signUpSchema> = (errors) =>

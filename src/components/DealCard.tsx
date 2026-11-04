@@ -22,7 +22,7 @@ const DealCard = (deal: Deal) => {
 					<div className='flex text-white bg-amber-500 rounded-2xl h-8 w-32 justify-center items-center mb-2'>
 						<BadgeDollarSignIcon color='white' />
 						<p className='text-white bg-amber-500 w-24 rounded-4xl text-center'>
-							{deal.deal_type.replace('_', ' ')}
+							{deal.deal_type.replaceAll('_', ' ')}
 						</p>
 					</div>
 					<p className='text-xl text-slate-900 dark:text-slate-50 font-semibold hover:text-amber-500'>

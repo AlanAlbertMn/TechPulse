@@ -296,7 +296,11 @@ async function main() {
 	];
 	// Example: Insert initial data
 	await prisma.product.createMany({
-		data: dummyAmazonData,
+		// `delivery` is not a column on Product, so map it to delivery_price
+		data: dummyAmazonData.map(({ delivery, ...product }) => ({
+			...product,
+			delivery_price: delivery,
+		})),
 		skipDuplicates: true,
 	});
 	console.log('Database seeded successfully.');

@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { User } from '@prisma/client';
@@ -6,7 +6,8 @@ import { getUserById } from '@/lib/users';
 import { redisClient } from '@/redis/redis';
 import { RedisUser } from '@/types/User';
 
-const SESSION_EXPIRATION_DAYS = 60 * 60 * 24 * 7;
+// 7 days, in seconds
+const SESSION_EXPIRATION_SECONDS = 60 * 60 * 24 * 7;
 
 export async function getUserFromSession(withFullUser: boolean = false) {
 	const cookieStore = await cookies();
@@ -31,18 +32,20 @@ async function getUserSessionById(sessionId: string) {
 }
 
 export async function createUserSession(user: User) {
-	const sessionId = crypto.randomBytes(512).toString('hex').normalize();
+	// 32 random bytes (256 bits) is plenty; 512 bytes produced a 1KB cookie
+	const sessionId = crypto.randomBytes(32).toString('hex');
 	//Save in redis
 	await redisClient.set(
 		`session:${sessionId}`,
 		{ userId: user.id, userRole: user.role },
-		{ ex: SESSION_EXPIRATION_DAYS },
+		{ ex: SESSION_EXPIRATION_SECONDS },
 	);
 	const cookieStore = await cookies();
 	cookieStore.set('sessionId', sessionId, {
 		httpOnly: true,
-		secure: true,
-		expires: Date.now() + SESSION_EXPIRATION_DAYS * 1000,
+		secure: process.env.NODE_ENV === 'production',
+		path: '/',
+		maxAge: SESSION_EXPIRATION_SECONDS,
 		sameSite: 'lax',
 	});
 }

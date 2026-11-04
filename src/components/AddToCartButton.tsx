@@ -3,17 +3,10 @@ import { useCart } from '@/lib/CartProvider';
 import { CartProps } from '@/types/Product';
 import { Product } from '@prisma/client';
 import { ShoppingCart } from 'lucide-react';
-import { useEffect } from 'react';
 import { Bounce, toast } from 'react-toastify';
 
 export default function AddToCartButton({ product }: { product: Product }) {
 	const { cart, setCart } = useCart();
-
-	useEffect(() => {
-		//TODO: fix re rendering on every component when cart changes
-		//console.log(cart);
-		localStorage.setItem('cart', JSON.stringify(cart));
-	}, [cart]);
 
 	const handleAddCart = () => {
 		// total and quantities should be added here?
@@ -37,7 +30,6 @@ export default function AddToCartButton({ product }: { product: Product }) {
 			setCart([productToAdd, ...cart]);
 		}
 
-		localStorage.setItem('cart', JSON.stringify(cart));
 		toast.success(`${titleArray}... has been added to the cart`, {
 			position: 'bottom-right',
 			autoClose: 3000,

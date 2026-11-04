@@ -1,26 +1,27 @@
 'use client';
 
 import { Product } from '@prisma/client';
-import { redirect } from 'next/navigation';
+import { toast } from 'react-toastify';
 
-const BuyNowButton = ({
-	product,
-	userId,
-}: {
-	product: Product;
-	userId: number;
-}) => {
+const BuyNowButton = ({ product }: { product: Product }) => {
 	const handlePay = async () => {
 		const res = await fetch('/api/checkout', {
 			method: 'POST',
-			body: JSON.stringify({ userId, cart: [{ product, quantity: 1 }] }),
+			// The server reads the user from the session cookie and the price from the DB
+			body: JSON.stringify({ cart: [{ product: { id: product.id }, quantity: 1 }] }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		});
-		const session = await res.json();
-
-		redirect(session.url);
+		const data = await res.json();
+		if (!res.ok || !data.url) {
+			toast.error(data.error ?? 'Unable to start checkout', {
+				position: 'bottom-right',
+			});
+			return;
+		}
+		// redirect() doesn't work in event handlers; Stripe is an external URL anyway
+		window.location.assign(data.url);
 	};
 
 	return (

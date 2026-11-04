@@ -28,19 +28,16 @@ const LoginPage = () => {
 	} = useForm<signInSchema>({ resolver });
 
 	async function onSubmit(data: signInSchema) {
-		// console.log(data);
-		const user = await signIn(data);
-		if (
-			user === 'Account already exists for this email' ||
-			user === 'Unable to log you in'
-		) {
-			toast.error(user, {
+		// On success the server action redirects to '/', so only errors come back
+		const message = await signIn(data);
+		if (message) {
+			toast.error(message, {
 				position: 'bottom-right',
 				closeOnClick: true,
 				pauseOnHover: false,
 				theme: 'colored',
 			});
-		} else console.log(user);
+		}
 	}
 
 	const onError: SubmitErrorHandler<signInSchema> = (errors) =>

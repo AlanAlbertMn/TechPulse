@@ -3,16 +3,18 @@ import ProductImageCarrousel from '@/components/ProductImageCarrousel';
 import { Star } from 'lucide-react';
 import { getProduct, updateProductWithDetails } from '@/lib/products';
 import { type ProductDetails } from '@/types/Product';
-import { Product } from '@prisma/client';
 import axios from 'axios';
+import { notFound } from 'next/navigation';
 
-async function ProductDetails({
+// Named ProductPage so it doesn't shadow the imported ProductDetails type
+async function ProductPage({
 	params,
 }: {
 	params: Promise<{ product: string }>;
 }) {
 	const { product } = await params;
-	let prod = (await getProduct(product)) as Product;
+	let prod = await getProduct(product);
+	if (!prod) notFound();
 
 	if (prod.images.length === 0) {
 		// To consume the api directly
@@ -31,27 +33,32 @@ async function ProductDetails({
 			params: paramsForAxios,
 		});
 		const productDets = data.data;
+		// The API returns prices both as '19.99' and '$23.00'
+		const toNumber = (value: unknown) => {
+			const n = parseFloat(String(value ?? '').replace(/[^0-9.]/g, ''));
+			return Number.isFinite(n) ? n : undefined;
+		};
 		const productForUpdate: ProductDetails = {
-			asin: productDets.asin,
-			thumbnail: productDets.product_photo,
-			title: productDets.product_title,
-			rating: Number(productDets.product_star_rating),
-			price: parseFloat(productDets.product_price) || 8.0,
-			original_price:
-				Number(productDets.product_original_price?.replace('$', '')) ||
-				undefined,
+			asin: prod.asin,
+			thumbnail: productDets.product_photo || prod.thumbnail,
+			title: productDets.product_title || prod.title,
+			rating: toNumber(productDets.product_star_rating) ?? prod.rating,
+			// Checkout charges this price, so never fall back to a made-up value
+			price: toNumber(productDets.product_price) ?? prod.price,
+			original_price: toNumber(productDets.product_original_price),
 			description: productDets.product_description || undefined,
 			images: productDets.product_photos || undefined,
-			num_ratings: productDets.product_num_ratings,
+			num_ratings: productDets.product_num_ratings ?? prod.num_ratings,
 			delivery_price: productDets.delivery_price || 'FREE',
-			delivery_time: productDets.delivery_time || new Date().toDateString(),
+			// Don't persist today's date: it would be stored and shown forever
+			delivery_time: productDets.delivery_time || undefined,
 			sales_volume: productDets.sales_volume || undefined,
 			about_product: productDets.about_product || undefined,
-			brand: productDets.product_details.Brand || undefined,
+			brand: productDets.product_details?.Brand || undefined,
 		};
 		//fetch from API and save into db
 		prod = await updateProductWithDetails(productForUpdate);
-	} else console.log(prod.images);
+	}
 
 	return (
 		<section className='bg-[#F8FAFC] text-slate-950/50 dark:bg-slate-950/70 w-full'>
@@ -106,7 +113,7 @@ async function ProductDetails({
 							</div>
 							<div className='pt-10 flex flex-col gap-6'>
 								{prod.delivery_time && (
-									<p className='text-amber-50 text-end'>
+									<p className='text-slate-600 dark:text-amber-50 text-end'>
 										{`Delivery for ${prod.delivery_price} on ${prod.delivery_time}`}
 									</p>
 								)}
@@ -124,4 +131,4 @@ async function ProductDetails({
 	);
 }
 
-export default ProductDetails;
+export default ProductPage;
