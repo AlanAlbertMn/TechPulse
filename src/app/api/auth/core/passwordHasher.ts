@@ -1,4 +1,4 @@
-'use server';
+import 'server-only';
 import crypto from 'node:crypto';
 
 export async function hashPassword(
@@ -7,7 +7,7 @@ export async function hashPassword(
 ): Promise<string> {
 	return new Promise((resolve, reject) => {
 		crypto.scrypt(password.normalize(), salt, 64, (error, hash) => {
-			if (error) reject(error);
+			if (error) return reject(error);
 			resolve(hash.toString('hex').normalize());
 		});
 	});

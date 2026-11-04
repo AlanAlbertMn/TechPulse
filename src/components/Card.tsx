@@ -6,7 +6,7 @@ const OrderCard = (order: OrderWithItems) => {
 		<div className='mt-2 bg-slate-900 rounded-2xl'>
 			<div className='flex justify-between m-4'>
 				<p>Ordered on {order.createdAt.toDateString()}</p>
-				<p>Total: ${order.totalAmount}</p>
+				<p>Total: ${order.totalAmount.toFixed(2)}</p>
 				<p>Status: {order.status}</p>
 				<p>Order N° {order.id}</p>
 			</div>

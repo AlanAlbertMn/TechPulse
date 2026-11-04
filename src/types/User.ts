@@ -1,3 +1,6 @@
+export const EXISTING_ACCOUNT =
+	'Account already exists for this email. Login instead.';
+
 export type signUpSchema = {
 	name: string;
 	email: string;

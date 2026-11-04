@@ -12,7 +12,7 @@ const robotoSans = Roboto({
 
 export const metadata: Metadata = {
 	title: 'TechPulse by Alan Albert',
-	description: 'Next Level technology store',
+	description: 'Your tech go-to',
 };
 
 export default function RootLayout({
@@ -22,13 +22,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en' className={`${robotoSans.className} h-full antialiased`}>
-			<CartProvider>
-				<body>
+			<body>
+				<CartProvider>
 					<Navbar />
 					{children}
 					<ToastContainer />
-				</body>
-			</CartProvider>
+				</CartProvider>
+			</body>
 		</html>
 	);
 }

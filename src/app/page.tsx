@@ -21,7 +21,7 @@ export default async function Ecommerce() {
 			</section>
 			{/* FOOTER */}
 			<footer className='text-center text-white py-10 bg-[#3d7aff] outline-2 outline-zinc-200 dark:outline-[#253648] flex justify-around h-10 items-center'>
-				<p>© 2026 TechStore</p>
+				<p>© 2026 TechPulse</p>
 				<p>by Alan Albert</p>
 			</footer>
 		</div>

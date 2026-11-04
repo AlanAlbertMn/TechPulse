@@ -1,7 +1,13 @@
-import { signInSchema, signUpSchema, signUpUser } from '@/types/User';
+'use server';
+
+import {
+	EXISTING_ACCOUNT,
+	signInSchema,
+	signUpSchema,
+	signUpUser,
+} from '@/types/User';
 import { redirect } from 'next/navigation';
 import { createUser, getUser } from '@/lib/users';
-import { User } from '@prisma/client';
 import {
 	comparePasswords,
 	generateSalt,
@@ -9,16 +15,21 @@ import {
 } from '../core/passwordHasher';
 import { createUserSession, deleteUserSession } from '../core/session';
 
-export const EXISTING_ACCOUNT =
-	'Account already exists for this email. Login instead.';
+// Server Actions are public HTTP endpoints: anyone can call them with any
+// payload, so never trust the shape/content of the arguments.
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function signIn(unsafeData: signInSchema) {
-	const user = await getUser(unsafeData.email);
+	const email = String(unsafeData?.email ?? '').trim();
+	const password = String(unsafeData?.password ?? '');
+	if (!email || !password) return 'Unable to log you in';
+
+	const user = await getUser(email);
 	if (!user) return 'Unable to log you in';
 
 	const isCorrectPassword = await comparePasswords({
 		hashedPassword: user.password,
-		typedPassword: unsafeData.password,
+		typedPassword: password,
 		userSalt: user.salt,
 	});
 	if (!isCorrectPassword) return 'Unable to log you in';
@@ -28,7 +39,17 @@ export async function signIn(unsafeData: signInSchema) {
 }
 
 export async function signUp(unsafeData: signUpSchema) {
-	const existingUser = await getUser(unsafeData.email);
+	const name = String(unsafeData?.name ?? '').trim();
+	const email = String(unsafeData?.email ?? '').trim();
+	const password = String(unsafeData?.password ?? '');
+	const confirmPassword = String(unsafeData?.confirmPassword ?? '');
+
+	if (name.length < 2) return 'Please enter your name';
+	if (!EMAIL_REGEX.test(email)) return 'Please enter a valid email';
+	if (password.length < 8) return 'Password must be at least 8 characters';
+	if (password !== confirmPassword) return 'Passwords do not match';
+
+	const existingUser = await getUser(email);
 	if (existingUser) {
 		return EXISTING_ACCOUNT;
 	}
@@ -36,24 +57,27 @@ export async function signUp(unsafeData: signUpSchema) {
 	try {
 		//Hash the password to store it safely in the db
 		const userSalt = await generateSalt();
-		const hashedPassword = await hashPassword(unsafeData.password, userSalt);
+		const hashedPassword = await hashPassword(password, userSalt);
 
 		const user: signUpUser = {
-			name: unsafeData.name,
-			email: unsafeData.email,
+			name,
+			email,
 			password: hashedPassword,
 			salt: userSalt,
 		};
 
-		const createdUser: User = await createUser(user);
-		if (createdUser == null) return 'Unable to create account';
+		const createdUser = await createUser(user);
 		await createUserSession(createdUser);
-		return createdUser;
 	} catch {
 		return 'Unable to create account';
 	}
+
+	// Never return the created user to the client: it contains the password
+	// hash and salt. redirect() must be called outside try/catch.
+	redirect('/');
 }
 
 export async function logOut() {
 	await deleteUserSession();
+	redirect('/');
 }

@@ -1,20 +1,14 @@
 'use client';
 import { useCart } from '@/lib/CartProvider';
 import { ShoppingCartIcon } from 'lucide-react';
-import { useEffect } from 'react';
-import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 export default function ShoppingCart() {
-	const { cart, setCart } = useCart();
-
-	useEffect(() => {
-		// get cart from context for displaying it
-		const localCart = localStorage.getItem('cart');
-		if (localCart != null) setCart(JSON.parse(localCart));
-	}, [setCart]);
+	// The cart is loaded from / saved to localStorage in CartProvider
+	const { cart } = useCart();
 
 	return (
-		<button onClick={() => redirect('/cart')}>
+		<Link href='/cart' aria-label='Shopping cart' className='relative'>
 			{cart.length != 0 && (
 				<span className='cursor-pointer absolute flex size-4'>
 					<p
@@ -33,6 +27,6 @@ export default function ShoppingCart() {
 				color='#2563EB'
 				className='cursor-pointer size-7 md:size-8'
 			/>
-		</button>
+		</Link>
 	);
 }

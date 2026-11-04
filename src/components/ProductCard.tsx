@@ -13,12 +13,10 @@ const ProductCard = ({
 	product: Product;
 	user: sessionSchema;
 }) => {
-	// console.log(user);
-
 	return (
 		<div
 			key={product.asin}
-			className='flex flex-col justify-between p-4 bg-white dark:bg-[#182534] rounded-2xl outline-2 dark:outline-[#253648] outline-zinc-200 cursor-pointer'
+			className='flex flex-col justify-between p-4 bg-white dark:bg-[#182534] dark:hover:bg-slate-700 rounded-2xl outline-2 dark:outline-[#253648] outline-zinc-200 cursor-pointer hover:-translate-y-2 hover:bg-gray-100'
 		>
 			<Link href={`/products/${product.asin}`}>
 				<div className='relative h-60'>
@@ -30,14 +28,18 @@ const ProductCard = ({
 						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 					/>
 				</div>
-				<h3 className='font-semibold mt-2'>{`${product.title.substring(0, 75)}...`}</h3>
+				<h3 className='font-semibold mt-2'>
+					{product.title.length > 75
+						? `${product.title.substring(0, 75)}...`
+						: product.title}
+				</h3>
 
 				<div className='flex gap-1 items-center'>
 					<p className='text-xl text-sky-800 font-medium dark:text-blue-500'>
 						${product.price.toFixed(2)}
 					</p>
 					{product.original_price && (
-						<p className='text-gray-400 text-decoration: line-through'>
+						<p className='text-gray-400 line-through'>
 							${product.original_price.toFixed(2)}
 						</p>
 					)}
@@ -52,7 +54,7 @@ const ProductCard = ({
 			</Link>
 			<div className='flex flex-col justify-center items-center'>
 				<AddToCartButton product={product} />
-				{user && <BuyNowButton userId={user.userId} product={product} />}
+				{user && <BuyNowButton product={product} />}
 			</div>
 		</div>
 	);

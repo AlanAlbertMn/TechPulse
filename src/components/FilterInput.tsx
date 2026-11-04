@@ -1,25 +1,18 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-
-type SortOption =
-	| 'featured'
-	| 'price-asc'
-	| 'price-desc'
-	| 'rating-desc'
-	| 'name-asc';
+import type { SortOption } from '@/types/Sort';
 
 const FilterInput = () => {
-	const [sortBy, setSortBy] = useState<SortOption>('featured');
 	const searchParams = useSearchParams();
+	// Read the value from the URL so it survives reloads / shared links
+	const sortBy = (searchParams.get('sort') ?? 'featured') as SortOption;
 	const router = useRouter();
 	const pathname = usePathname();
 
 	const handleChange = (
 		event: React.ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
 	) => {
-		setSortBy(event.target.value as SortOption);
 		const params = new URLSearchParams(searchParams);
 		params.set('sort', event.target.value);
 		router.replace(`${pathname}?${params.toString()}`);
@@ -34,7 +27,7 @@ const FilterInput = () => {
 			<option value='featured'>Featured</option>
 			<option value='price-asc'>Price: Low to High</option>
 			<option value='price-desc'>Price: High to Low</option>
-			<option value='rating-desc'>Highest Rated</option>
+			{/* Deals have no rating data, so there's no "Highest Rated" option */}
 			<option value='name-asc'>Name: A-Z</option>
 		</select>
 	);

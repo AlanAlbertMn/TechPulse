@@ -43,6 +43,9 @@ model Order {
   status          String  @default("pending")
   shippingAddress String?
   paymentMethod   String?
+  // Stripe Checkout Session id. Unique so a retried webhook can't create the
+  // same order twice. Nullable because older orders don't have one.
+  stripeSessionId String? @unique
 
   user  User        @relation(fields: [userId], references: [id])
   items OrderItem[]

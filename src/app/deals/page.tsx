@@ -9,7 +9,7 @@ const DealsPage = async ({
 }) => {
 	const { sort } = await searchParams;
 	let sorted = deals.data.deals;
-	if (sort !== 'featured' || undefined) {
+	if (sort && sort !== 'featured') {
 		sorted = [...deals.data.deals].sort((a, b) => {
 			if (sort === 'price-asc')
 				return a.deal_price.amount - b.deal_price.amount;

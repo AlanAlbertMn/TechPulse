@@ -1,3 +1,4 @@
+import 'server-only';
 import { prisma } from '@/lib/prisma';
 import { ProductDetails } from '@/types/Product';
 
@@ -6,11 +7,11 @@ export async function getProducts() {
 }
 
 export async function getProduct(asin: string) {
-	return await prisma.product.findFirst({ where: { asin } });
+	return await prisma.product.findUnique({ where: { asin } });
 }
 
 export async function getProductById(id: number) {
-	return await prisma.product.findFirst({ where: { id } });
+	return await prisma.product.findUnique({ where: { id } });
 }
 
 export async function updateProductWithDetails(productDetails: ProductDetails) {
