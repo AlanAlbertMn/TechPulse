@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { AnimatePresence, motion } from 'motion/react';
 import {
 	ArrowLeftIcon,
@@ -55,23 +55,18 @@ const CartDrawer = () => {
 		});
 
 		if (res.status === 401) {
-			toast.info(
-				'Please create an account first to keep track of your order. Or login if you already have an account.',
-				{
-					position: 'bottom-right',
-					autoClose: 5000,
-					closeOnClick: true,
-				},
-			);
+			toast.info('Account required', {
+				description:
+					'Please create an account first to keep track of your order. Or login if you already have an account.',
+				duration: 5000,
+			});
 			router.push('/register');
 			return;
 		}
 
 		const data = await res.json();
 		if (!res.ok || !data.url) {
-			toast.error(data.error ?? 'Unable to start checkout', {
-				position: 'bottom-right',
-			});
+			toast.error(data.error ?? 'Unable to start checkout');
 			return;
 		}
 

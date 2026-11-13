@@ -8,7 +8,7 @@ import {
 	useWatch,
 } from 'react-hook-form';
 import { signUp } from '../api/auth/nextjs/actions';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import {
@@ -107,20 +107,10 @@ const RegisterPage = () => {
 		const message = await signUp(data);
 		if (!message) return;
 		if (message === EXISTING_ACCOUNT) {
-			toast.info(message, {
-				position: 'bottom-right',
-				closeOnClick: true,
-				pauseOnHover: false,
-				theme: 'colored',
-			});
+			toast.info(message);
 			router.push('/login');
 		} else {
-			toast.error(message, {
-				position: 'bottom-right',
-				closeOnClick: true,
-				pauseOnHover: false,
-				theme: 'colored',
-			});
+			toast.error(message);
 		}
 	}
 

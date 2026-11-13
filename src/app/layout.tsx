@@ -3,7 +3,7 @@ import { JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 import { CartProvider } from '@/lib/CartProvider';
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from '@/components/ui/sonner';
 import Navbar from '@/components/navbar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
@@ -53,7 +53,7 @@ export default function RootLayout({
 					<TooltipProvider>
 						<Navbar />
 						<div className='min-h-dvh pb-28 md:pb-0 md:pl-20'>{children}</div>
-						<ToastContainer theme='dark' />
+						<Toaster />
 					</TooltipProvider>
 				</CartProvider>
 			</body>

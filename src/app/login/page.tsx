@@ -3,7 +3,7 @@ import { signInSchema } from '@/types/User';
 import Link from 'next/link';
 import { Resolver, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { signIn } from '../api/auth/nextjs/actions';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { motion } from 'motion/react';
 import {
 	ArrowRightIcon,
@@ -64,12 +64,7 @@ const LoginPage = () => {
 		// On success the server action redirects to '/', so only errors come back
 		const message = await signIn(data);
 		if (message) {
-			toast.error(message, {
-				position: 'bottom-right',
-				closeOnClick: true,
-				pauseOnHover: false,
-				theme: 'colored',
-			});
+			toast.error(message);
 		}
 	}
 

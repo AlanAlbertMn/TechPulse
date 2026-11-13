@@ -1,7 +1,8 @@
 'use client';
 import { PlusIcon } from '@phosphor-icons/react';
 import { Product } from '@prisma/client';
-import { Bounce, toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { useCart } from '@/lib/CartProvider';
 import { CartProps } from '@/types/Product';
 import { Button } from '@/components/ui/button';
@@ -19,9 +20,9 @@ export default function AddToCartButton({
 	className,
 }: AddToCartButtonProps) {
 	const { cart, setCart } = useCart();
+	const router = useRouter();
 
 	const handleAddCart = () => {
-		const titleArray = product.title.split(' ').slice(0, 10).join(' ');
 		const existingProd = cart.find(
 			(cartItem) => cartItem.product.asin == product.asin,
 		);
@@ -41,15 +42,10 @@ export default function AddToCartButton({
 			setCart([productToAdd, ...cart]);
 		}
 
-		toast.success(`${titleArray}... has been added to the cart`, {
-			position: 'bottom-right',
-			autoClose: 3000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: false,
-			draggable: true,
-			progress: undefined,
-			transition: Bounce,
+		toast.success(quantity > 1 ? `${quantity} added to cart` : 'Added to cart', {
+			description: product.title,
+			duration: 3000,
+			action: { label: 'View cart', onClick: () => router.push('/cart') },
 		});
 	};
 

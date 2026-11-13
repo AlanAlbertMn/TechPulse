@@ -2,7 +2,7 @@
 
 import { LightningIcon } from '@phosphor-icons/react';
 import { Product } from '@prisma/client';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -24,9 +24,7 @@ const BuyNowButton = ({ product, quantity = 1, className }: BuyNowButtonProps) =
 		});
 		const data = await res.json();
 		if (!res.ok || !data.url) {
-			toast.error(data.error ?? 'Unable to start checkout', {
-				position: 'bottom-right',
-			});
+			toast.error(data.error ?? 'Unable to start checkout');
 			return;
 		}
 		// redirect() doesn't work in event handlers; Stripe is an external URL anyway
