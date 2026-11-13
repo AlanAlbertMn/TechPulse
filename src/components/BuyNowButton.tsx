@@ -1,14 +1,23 @@
 'use client';
 
+import { LightningIcon } from '@phosphor-icons/react';
 import { Product } from '@prisma/client';
 import { toast } from 'react-toastify';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-const BuyNowButton = ({ product }: { product: Product }) => {
+type BuyNowButtonProps = {
+	product: Product;
+	quantity?: number;
+	className?: string;
+};
+
+const BuyNowButton = ({ product, quantity = 1, className }: BuyNowButtonProps) => {
 	const handlePay = async () => {
 		const res = await fetch('/api/checkout', {
 			method: 'POST',
 			// The server reads the user from the session cookie and the price from the DB
-			body: JSON.stringify({ cart: [{ product: { id: product.id }, quantity: 1 }] }),
+			body: JSON.stringify({ cart: [{ product: { id: product.id }, quantity }] }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -25,12 +34,16 @@ const BuyNowButton = ({ product }: { product: Product }) => {
 	};
 
 	return (
-		<button
-			onClick={() => handlePay()}
-			className='w-full text-white transition-all font-medium bg-sky-700 hover:bg-sky-800 hover:scale-[1.02] rounded-xl h-10 mt-1'
+		<Button
+			variant='outline'
+			onClick={handlePay}
+			className={cn(
+				'h-10 w-full gap-2 font-extrabold tracking-wide uppercase hover:border-signal hover:text-signal dark:hover:bg-transparent',
+				className,
+			)}
 		>
-			Buy now
-		</button>
+			<LightningIcon weight='fill' /> Buy now
+		</Button>
 	);
 };
 

@@ -21,3 +21,14 @@ export async function updateProductWithDetails(productDetails: ProductDetails) {
 		where: { asin: productDetails.asin },
 	});
 }
+
+// Same-brand items first, then the best-rated of the rest
+export async function getRelatedProducts(asin: string, brand: string | null, take = 4) {
+	const others = await prisma.product.findMany({
+		where: { NOT: { asin } },
+		orderBy: { rating: 'desc' },
+	});
+	const sameBrand = brand ? others.filter((p) => p.brand === brand) : [];
+	const rest = others.filter((p) => !sameBrand.includes(p));
+	return [...sameBrand, ...rest].slice(0, take);
+}

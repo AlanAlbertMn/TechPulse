@@ -1,16 +1,29 @@
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
+import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 import type { Product } from '@prisma/client';
 import ProductCard from './ProductCard';
 import type { sessionSchema } from '@/types/User';
 import type { SortOption } from '@/types/Sort';
-import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import SortPills from './SortPills';
+import InViewItem from './InViewItem';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 type ProductsBrowserProps = {
 	products: Product[];
 	user: sessionSchema;
 };
+
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+	{ value: 'featured', label: 'Featured' },
+	{ value: 'rating-desc', label: 'Top rated' },
+	{ value: 'price-asc', label: 'Price ↑' },
+	{ value: 'price-desc', label: 'Price ↓' },
+	{ value: 'name-asc', label: 'A–Z' },
+];
 
 export default function ProductsBrowser({
 	products,
@@ -54,72 +67,86 @@ export default function ProductsBrowser({
 		}
 	}, [products, debouncedSearch, sortBy]);
 
-	return (
-		<>
-			<div className='flex flex-col p-4 sm:flex-row sm:items-center sm:justify-between'>
-				{debouncedSearch ? (
-					<h2 className='my-6 text-2xl'>
-						Results for:{' '}
-						<span className='font-semibold'>{debouncedSearch}</span>
-					</h2>
-				) : (
-					<h2 className='my-6 text-2xl font-bold text-[#013f6b] dark:text-slate-50'>
-						Trending Products
-					</h2>
-				)}
+	// The lead card only makes sense on the default, unfiltered view
+	const showFeatured = sortBy === 'featured' && !debouncedSearch;
 
-				<div className='flex flex-col sm:flex-row gap-2'>
-					<div className='flex items-center hover:border-amber-300'>
-						<Search
-							className='rounded-l-xl border border-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 outline-none w-12 h-12 p-3'
-							size={20}
-						/>
-						<input
+	return (
+		<section id='catalog' className='scroll-mt-4'>
+			{/* Sticky utility bar */}
+			<div className='sticky top-0 z-40 flex flex-col items-start justify-between gap-4 border-b bg-background/80 px-6 py-4 backdrop-blur-xl md:flex-row md:items-center md:px-12'>
+				<SortPills
+					ariaLabel='Sort products'
+					options={SORT_OPTIONS}
+					value={sortBy}
+					onValueChange={setSortBy}
+				/>
+
+				<div className='flex w-full items-center justify-between gap-4 md:w-auto md:justify-end'>
+					<span className='font-mono text-xs whitespace-nowrap text-muted-foreground'>
+						{filteredAndSortedProducts.length} ITEMS
+					</span>
+					<div className='relative w-full md:w-72'>
+						<MagnifyingGlassIcon className='pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground' />
+						<Input
 							value={searchTerm}
-							onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-								setSearchTerm(event.target.value)
-							}
-							placeholder='Search in TechPulse'
-							type='text'
-							className='rounded-r-xl border border-slate-400 dark:border-slate-800 dark:bg-slate-900 px-4 h-12 text-sm text-slate-600 dark:text-slate-200 outline-none'
+							onChange={(event) => setSearchTerm(event.target.value)}
+							placeholder='Search the catalog'
+							aria-label='Search products'
+							type='search'
+							className='h-9 rounded-full pl-9'
 						/>
-					</div>
-					<div className='py-3 md:px-2 md:py-0'>
-						<select
-							value={sortBy}
-							onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-								setSortBy(event.target.value as SortOption)
-							}
-							spellCheck='false'
-							className='rounded-xl border border-slate-400 dark:border-slate-800 dark:bg-slate-900 px-4 h-12 text-sm text-slate-600 dark:text-slate-200 outline-none'
-						>
-							<option value='featured'>Featured</option>
-							<option value='price-asc'>Price: Low to High</option>
-							<option value='price-desc'>Price: High to Low</option>
-							<option value='rating-desc'>Highest Rated</option>
-							<option value='name-asc'>Name: A-Z</option>
-						</select>
 					</div>
 				</div>
 			</div>
 
-			{filteredAndSortedProducts.length === 0 ? (
-				<div className='rounded-3xl border m-4 bg-slate-50 text-slate-900 dark:border-slate-800 dark:bg-slate-900 py-7 text-center'>
-					<p className='text-lg font-semibold dark:text-slate-100'>
-						{`No products including '${searchTerm}'`}
-					</p>
+			<div className='px-6 py-12 md:px-12'>
+				<div className='mb-10 flex flex-col gap-3'>
+					<span className='font-mono text-xs tracking-widest text-signal uppercase'>
+						{debouncedSearch ? 'Query results' : '01 // Inventory'}
+					</span>
+					<h2 className='font-display text-5xl leading-none font-black tracking-tighter md:text-7xl'>
+						{debouncedSearch ? (
+							<>
+								<span className='text-muted-foreground'>“</span>
+								{debouncedSearch}
+								<span className='text-muted-foreground'>”</span>
+							</>
+						) : (
+							'The catalog.'
+						)}
+					</h2>
+				</div>
 
-					<p className='mt-2 text-sm text-slate-400'>
-						Try another search term.
-					</p>
-				</div>
-			) : (
-				<div className='grid grid-cols-1 px-4 gap-6 sm:grid-cols-3 lg:grid-cols-4'>
-					{filteredAndSortedProducts.map((product) => (
-						<ProductCard key={product.id} product={product} user={user} />
-					))}
-				</div>
-			)}
-		</>
+				{filteredAndSortedProducts.length === 0 ? (
+					<Card className='items-center gap-2 rounded-2xl border border-dashed py-16 text-center ring-0'>
+						<p className='font-display text-2xl font-black'>
+							No signal for “{searchTerm}”
+						</p>
+						<p className='font-extralight text-muted-foreground'>
+							Try another search term.
+						</p>
+					</Card>
+				) : (
+					<div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+						{filteredAndSortedProducts.map((product, index) => {
+							const featured = showFeatured && index === 0;
+							return (
+								<InViewItem
+									key={product.id}
+									index={index}
+									className={cn(featured && 'sm:col-span-2')}
+								>
+									<ProductCard
+										product={product}
+										user={user}
+										featured={featured}
+									/>
+								</InViewItem>
+							);
+						})}
+					</div>
+				)}
+			</div>
+		</section>
 	);
 }

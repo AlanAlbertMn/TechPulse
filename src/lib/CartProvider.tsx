@@ -5,6 +5,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 export interface SomeContextValue {
 	cart: CartProps[];
 	setCart: React.Dispatch<React.SetStateAction<CartProps[]>>;
+	// False until the saved cart has been read from localStorage
+	hydrated: boolean;
 }
 
 const CartContext = createContext<SomeContextValue>({} as SomeContextValue);
@@ -40,7 +42,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 	}, [cart, hydrated]);
 
 	return (
-		<CartContext.Provider value={{ cart, setCart }}>
+		<CartContext.Provider value={{ cart, setCart, hydrated }}>
 			{children}
 		</CartContext.Provider>
 	);

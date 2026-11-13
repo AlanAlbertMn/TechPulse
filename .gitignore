@@ -42,4 +42,8 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
-package-lock.json
+
+# AI agent skills (third-party docs, installed locally)
+/.agents/
+/.claude/skills/
+skills-lock.json

@@ -2,6 +2,15 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { SortOption } from '@/types/Sort';
+import SortPills from './SortPills';
+
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+	{ value: 'featured', label: 'Featured' },
+	{ value: 'price-asc', label: 'Price ↑' },
+	{ value: 'price-desc', label: 'Price ↓' },
+	// Deals have no rating data, so there's no "Top rated" option
+	{ value: 'name-asc', label: 'A–Z' },
+];
 
 const FilterInput = () => {
 	const searchParams = useSearchParams();
@@ -10,26 +19,19 @@ const FilterInput = () => {
 	const router = useRouter();
 	const pathname = usePathname();
 
-	const handleChange = (
-		event: React.ChangeEvent<HTMLSelectElement, HTMLSelectElement>,
-	) => {
+	const handleChange = (value: SortOption) => {
 		const params = new URLSearchParams(searchParams);
-		params.set('sort', event.target.value);
-		router.replace(`${pathname}?${params.toString()}`);
+		params.set('sort', value);
+		router.replace(`${pathname}?${params.toString()}`, { scroll: false });
 	};
 
 	return (
-		<select
+		<SortPills
+			ariaLabel='Sort deals'
+			options={SORT_OPTIONS}
 			value={sortBy}
-			onChange={handleChange}
-			className='rounded-xl border border-slate-400 dark:border-slate-800 dark:bg-slate-900 px-4 h-12 text-sm text-slate-600 dark:text-slate-200 outline-none hover:border-amber-500'
-		>
-			<option value='featured'>Featured</option>
-			<option value='price-asc'>Price: Low to High</option>
-			<option value='price-desc'>Price: High to Low</option>
-			{/* Deals have no rating data, so there's no "Highest Rated" option */}
-			<option value='name-asc'>Name: A-Z</option>
-		</select>
+			onValueChange={handleChange}
+		/>
 	);
 };
 
