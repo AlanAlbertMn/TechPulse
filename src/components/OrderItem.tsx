@@ -1,7 +1,9 @@
 import { getProductById } from '@/lib/products';
 import { OrderItem } from '@prisma/client';
-import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowUpRightIcon } from '@phosphor-icons/react/ssr';
+import { Button } from '@/components/ui/button';
+import SpecimenPlate from './SpecimenPlate';
 
 const OrderItemCard = async (item: OrderItem) => {
 	// TODO: once OrderItem has a real relation to Product, include it in
@@ -9,53 +11,47 @@ const OrderItemCard = async (item: OrderItem) => {
 	const product = await getProductById(Number(item.productId));
 	const productHref = product ? `/products/${product.asin}` : null;
 	return (
-		<div className='bg-slate-900 border border-slate-800 rounded-3xl p-5 hover:border-cyan-500/30 transition-all'>
-			<div className='flex gap-4'>
-				<div className='relative h-24 w-24'>
-					{item.image && (
-						<Image
-							src={item.image}
-							alt={item.name}
-							fill
-							sizes='96px'
-							style={{ objectFit: 'contain' }}
-							className='w-24 h-24 rounded-2xl object-cover'
-						/>
-					)}
+		<div className='group/item flex gap-4 p-3 sm:gap-6 sm:pr-6'>
+			{item.image ? (
+				<SpecimenPlate
+					src={item.image}
+					alt={item.name}
+					sizes='96px'
+					className='size-20 shrink-0 rounded-lg sm:size-24'
+					imageClassName='p-3 transition-transform duration-700 ease-out-expo group-hover/item:scale-105'
+				/>
+			) : (
+				<div className='size-20 shrink-0 rounded-lg bg-muted sm:size-24' />
+			)}
+
+			<div className='flex min-w-0 flex-1 flex-col justify-center gap-3 sm:flex-row sm:items-center sm:justify-between'>
+				<div className='min-w-0'>
+					<h3
+						title={item.name}
+						className='line-clamp-2 font-display text-lg leading-tight font-black tracking-tight'
+					>
+						{item.name}
+					</h3>
+					<p className='mt-1 font-mono text-[11px] text-muted-foreground'>
+						{item.quantity} × ${item.price.toFixed(2)}
+					</p>
 				</div>
 
-				<div className='flex-1'>
-					<div className='flex justify-between'>
-						<div>
-							<h3 className='font-semibold text-lg'>{item.name}</h3>
-						</div>
-
-						<span className='text-slate-400 text-sm'>Qty: {item.quantity}</span>
-					</div>
-
-					<div className='mt-6 flex items-center justify-between'>
-						<div>
-							<p className='text-slate-400 text-sm'>
-								{item.quantity > 1
-									? `${item.quantity} × $${item.price.toFixed(2)}`
-									: 'Item amount'}
-							</p>
-
-							<p className='text-2xl font-bold'>
-								${(item.price * item.quantity).toFixed(2)}
-							</p>
-						</div>
-
-						{/* A <Link> inside a <button> is invalid HTML; style the link instead */}
-						{productHref && (
-							<Link
-								href={productHref}
-								className='grid place-items-center w-28 rounded-xl hover:scale-[1.02] mb-2 text-white bg-[#2563EB] hover:bg-[#1a4196] h-10 text-sm font-medium transition-all'
-							>
-								Product page
-							</Link>
-						)}
-					</div>
+				<div className='flex items-center justify-between gap-6 sm:justify-end'>
+					<p className='font-mono text-2xl font-extralight tracking-tight'>
+						${(item.price * item.quantity).toFixed(2)}
+					</p>
+					{productHref && (
+						<Button
+							variant='outline'
+							size='sm'
+							nativeButton={false}
+							render={<Link href={productHref} />}
+							className='gap-1.5 font-mono text-[11px] tracking-widest uppercase hover:border-signal hover:text-signal dark:hover:bg-transparent'
+						>
+							View <ArrowUpRightIcon weight='bold' />
+						</Button>
+					)}
 				</div>
 			</div>
 		</div>

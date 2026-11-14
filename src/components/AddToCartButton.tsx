@@ -1,16 +1,28 @@
 'use client';
+import { PlusIcon } from '@phosphor-icons/react';
+import { Product } from '@prisma/client';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { useCart } from '@/lib/CartProvider';
 import { CartProps } from '@/types/Product';
-import { Product } from '@prisma/client';
-import { ShoppingCart } from 'lucide-react';
-import { Bounce, toast } from 'react-toastify';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-export default function AddToCartButton({ product }: { product: Product }) {
+type AddToCartButtonProps = {
+	product: Product;
+	quantity?: number;
+	className?: string;
+};
+
+export default function AddToCartButton({
+	product,
+	quantity = 1,
+	className,
+}: AddToCartButtonProps) {
 	const { cart, setCart } = useCart();
+	const router = useRouter();
 
 	const handleAddCart = () => {
-		// total and quantities should be added here?
-		const titleArray = product.title.split(' ').slice(0, 10).join(' ');
 		const existingProd = cart.find(
 			(cartItem) => cartItem.product.asin == product.asin,
 		);
@@ -18,7 +30,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
 			//item already in the cart
 			const productToAdd: CartProps = {
 				product: product,
-				quantity: existingProd.quantity + 1,
+				quantity: existingProd.quantity + quantity,
 			};
 			const newCart = cart.filter(
 				(cartItem) => cartItem.product.asin != product.asin,
@@ -26,30 +38,26 @@ export default function AddToCartButton({ product }: { product: Product }) {
 			setCart([productToAdd, ...newCart]);
 		} else {
 			//item not on cart
-			const productToAdd: CartProps = { product: product, quantity: 1 };
+			const productToAdd: CartProps = { product: product, quantity };
 			setCart([productToAdd, ...cart]);
 		}
 
-		toast.success(`${titleArray}... has been added to the cart`, {
-			position: 'bottom-right',
-			autoClose: 3000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: false,
-			draggable: true,
-			progress: undefined,
-			transition: Bounce,
+		toast.success(quantity > 1 ? `${quantity} added to cart` : 'Added to cart', {
+			description: product.title,
+			duration: 3000,
+			action: { label: 'View cart', onClick: () => router.push('/cart') },
 		});
 	};
 
 	return (
-		<button
-			onClick={() => handleAddCart()}
-			className='w-full rounded-xl font-semibold hover:scale-[1.02] transition-all mb-2 text-white bg-[#2563EB] hover:bg-[#1c4aac] h-10'
+		<Button
+			onClick={handleAddCart}
+			className={cn(
+				'h-10 w-full gap-2 font-extrabold tracking-wide uppercase transition-colors hover:bg-signal hover:text-signal-foreground',
+				className,
+			)}
 		>
-			<span className='flex items-center gap-2 justify-center'>
-				<ShoppingCart /> Add to cart
-			</span>
-		</button>
+			<PlusIcon weight='bold' /> Add to cart
+		</Button>
 	);
 }

@@ -1,65 +1,57 @@
-import { LogIn, UserCircle2 } from 'lucide-react';
-import techLogoWhite from '../../assets/img/TechPulseLaptopWhite.svg';
-import techLogo from '../../assets/img/TechPulseLaptop.svg';
-import Image from 'next/image';
 import Link from 'next/link';
-import ShoppingCart from './ShoppingCart';
-import { getUserFromSession } from '@/app/api/auth/core/session';
-import LogOutButton from './LogOutButton';
+import {
+	LightningIcon,
+	PackageIcon,
+	SignInIcon,
+	SquaresFourIcon,
+} from '@phosphor-icons/react/ssr';
 import { User } from '@prisma/client';
+import { getUserFromSession } from '@/app/api/auth/core/session';
+import NavLink from './NavLink';
+import ShoppingCart from './ShoppingCart';
+import UserMenu from './UserMenu';
 
+// Fixed vertical rail on desktop, floating bottom dock on mobile.
 async function Navbar() {
-	const fullUser = (await getUserFromSession(true)) as User;
+	const fullUser = (await getUserFromSession(true)) as User | null;
 
 	return (
-		<>
-			<nav className='sticky top-0 w-full shadow-sm outline-2 outline-zinc-200 dark:outline-[#253648] backdrop-blur-xl bg-white dark:bg-slate-950/70 border-b-0 z-50'>
-				<div className='max-w-7xl mx-auto px-6 py-4 flex justify-between items-center'>
-					<Link href='/'>
-						<Image
-							src={techLogoWhite}
-							alt='TechPulse logo'
-							className='hidden dark:block w-2/3 md:w-1/4'
-							priority
-						/>
-						<Image
-							src={techLogo}
-							alt='TechPulse logo'
-							className='dark:hidden'
-							width={200}
-							priority
-						/>
-					</Link>
+		<nav className='fixed inset-x-4 bottom-4 z-50 flex items-center justify-between rounded-2xl border border-sidebar-border bg-sidebar px-5 py-3 shadow-[inset_0_1px_0_var(--sidebar-border)] backdrop-blur-xl md:inset-x-auto md:top-0 md:bottom-auto md:left-0 md:h-dvh md:w-20 md:flex-col md:rounded-none md:border-y-0 md:border-l-0 md:px-0 md:py-8'>
+			<Link
+				href='/'
+				aria-label='TechPulse home'
+				className='group grid size-10 place-items-center'
+			>
+				<span className='grid size-8 rotate-45 place-items-center rounded-sm bg-foreground transition-transform duration-500 ease-spring group-hover:rotate-135'>
+					<span className='size-3 bg-accent' />
+				</span>
+			</Link>
 
-					<div className='flex gap-3 items-center justify-end'>
-						{fullUser && (
-							<>
-								<div className='flex gap-1 justify-center items-center'>
-									<UserCircle2 color='#2563EB' className='size-7 md:size-9' />
-									<Link
-										href='/userOrders'
-										className='text-sky-900 dark:text-slate-50 font-bold text-xl'
-									>
-										{fullUser.name.split(' ')[0]}
-									</Link>
-								</div>
-								<div className='cursor-pointer'>
-									<LogOutButton />
-								</div>
-							</>
-						)}
-						{!fullUser && (
-							<div className='flex-nowrap'>
-								<Link href='/login'>
-									<LogIn color='#2563EB' className='size-7 md:size-8' />
-								</Link>
-							</div>
-						)}
-						<ShoppingCart />
-					</div>
-				</div>
-			</nav>
-		</>
+			<div className='flex items-center gap-4 md:flex-col md:gap-6'>
+				<NavLink href='/' label='Catalog'>
+					<SquaresFourIcon />
+				</NavLink>
+				<NavLink href='/deals' label='Deals'>
+					<LightningIcon />
+				</NavLink>
+				{fullUser && (
+					<NavLink href='/userOrders' label='My orders'>
+						<PackageIcon />
+					</NavLink>
+				)}
+			</div>
+
+			<div className='flex items-center gap-3 md:flex-col md:gap-4'>
+				<ShoppingCart />
+				{fullUser ? (
+					<UserMenu name={fullUser.name} email={fullUser.email} />
+				) : (
+					<NavLink href='/login' label='Sign in'>
+						<SignInIcon />
+					</NavLink>
+				)}
+			</div>
+		</nav>
 	);
 }
 

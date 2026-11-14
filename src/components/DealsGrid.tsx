@@ -1,4 +1,6 @@
 import DealCard from './DealCard';
+import InViewItem from './InViewItem';
+import { cn } from '@/lib/utils';
 
 export type Deal = {
 	deal_id: string;
@@ -30,12 +32,28 @@ export type Deal = {
 	percent_claimed_message: string | null;
 };
 
-const DealsGrid = ({ deals }: { deals: Deal[] }) => {
+const DealsGrid = ({
+	deals,
+	featureFirst = false,
+}: {
+	deals: Deal[];
+	/** Give the first deal the wide layout (default "featured" order only) */
+	featureFirst?: boolean;
+}) => {
 	return (
-		<div className='flex flex-col gap-8'>
-			{deals.map((deal) => (
-				<DealCard key={deal.product_asin} {...deal} />
-			))}
+		<div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+			{deals.map((deal, index) => {
+				const featured = featureFirst && index === 0;
+				return (
+					<InViewItem
+						key={deal.product_asin}
+						index={index}
+						className={cn(featured && 'sm:col-span-2')}
+					>
+						<DealCard deal={deal} featured={featured} />
+					</InViewItem>
+				);
+			})}
 		</div>
 	);
 };
